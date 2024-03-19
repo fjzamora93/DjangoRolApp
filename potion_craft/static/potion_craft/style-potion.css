@@ -43,3 +43,28 @@ body{
     font-size:1.5em;
     color:white(0, 0, 0);
 }
+
+/* Estilo para campos de formulario */
+.form-control, .form-control label {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    list-style-type: none;
+    font-family: 'Antiqua', serif;
+}
+
+label{
+    font-family: 'Antiqua', serif;
+    font-size:18px;
+}
+
+/* Estilo para campos de texto */
+textarea.form-control {
+    resize: vertical; /* Permite redimensionar verticalmente el área de texto */
+}

@@ -6,25 +6,27 @@
 
 {% block body %}
 
-    <p class="fuente-antigua">
-        Esto es un párrafo de prueba para la letra
-    </p>
-
 
     <h2> Alquimia lab</h2>
 
-    <h3>Elige tus ingredientes</h3>
-    <ul>
-        <li>Ingrediente 1</li>
-        <li>Ingrediente 2</li>
-        <li>Ingrediente 3</li>
-    </ul>
 
+    <div>
+        <label for="id_ingredientes">Elige tus ingredientes:</label>
+        <br>
+        {{ form.ingredientes }}
+        <br>
 
-    <h3>¿Cómo vas a procesar tus ingredientes?</h3>
-        <input type="text">
+        <label for="id_preparacion">Elige tu método de preparación:</label>
+        <br>
+        {{ form.preparacion }}
+        <br>
 
-    <input type="submit" value="Crear poción">
+        <label for="id_subject">Descripción:</label>
+        <br>
+        {{ form.subject }}
+        <br>
 
+        <input type="submit" value="Crear poción">
+    </div>
 
 {% endblock %}
