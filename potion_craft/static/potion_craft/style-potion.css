@@ -1,0 +1,45 @@
+@font-face{
+    font-family: "Antiqua";
+    src: url('fonts/UncialAntiqua-Regular.ttf');
+}
+
+p, h1,  h3, h4{
+    font-family: "Papyrus", serif;
+}
+
+.fuente-antigua{
+    font-family: "Antiqua", serif;
+}
+
+h2 { font-family: "Antiqua", serif;
+    font-size: 3em; 
+    font-style: normal; 
+    font-variant: normal; 
+    line-height: 26.4px; }
+
+
+body{
+    background-image: url(img/paper2.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position:center;
+}
+
+
+
+.menu, .menu li, .menu li a{
+    display: inline-block;
+    background-color:rgb(41, 39, 50) ;
+    color:white;
+    margin-left:20px;
+    padding:3px;
+    text-decoration: none;
+    font-size:1em;
+    font-family: "Antiqua", serif;
+}
+
+
+.menu li:hover{
+    font-size:1.5em;
+    color:white(0, 0, 0);
+}
