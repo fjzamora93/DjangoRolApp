@@ -9,24 +9,56 @@
 
     <h2> Alquimia lab</h2>
 
-
-    <div>
-        <label for="id_ingredientes">Elige tus ingredientes:</label>
+    
+        <h3> Preparación de ingredientes </h3>
         <br>
-        {{ form.ingredientes }}
-        <br>
-
-        <label for="id_preparacion">Elige tu método de preparación:</label>
-        <br>
-        {{ form.preparacion }}
+        <label for ="id_ingrediente"> Elige un ingrediente </label>
+            <br>{{ form_ingrediente.planta }}
         <br>
 
-        <label for="id_subject">Descripción:</label>
         <br>
-        {{ form.subject }}
+        <label for = "id_color"> ¿Cómo es el ingrediente? </label>
+            <br>{{ form_ingrediente.color }}
+        <br>
+
+        <br>
+        <label for = "id_procesamiento"> Elige una forma de procesar el ingrediente </label>
+            <br>{{ form_ingrediente.procesamiento }}
+        <br>
+
+        <br>
+        <label for = "id_herramienta">
+            <br>{{ form_ingrediente.herramienta }}
+        </label>
+        <br>
+
+        <input type="submit" value="Procesar tu ingrediente">
+
+  
+
+
+   
+        <h3> Potion Craft</h3>
+
+        <label for="id_esencias">Elige tu esencia:</label>
+        <br>
+        {{ form_potion.esencias }}
+        <br>
+
+        <label for="id_base">Elige tu base:</label>
+        <br>
+        {{ form_potion.base }}
+        <br>
+
+        <label for="id_potenciador">Elige un potenciador:</label>
+        <br>
+        {{ form_potion.potenciador }}
         <br>
 
         <input type="submit" value="Crear poción">
-    </div>
+ 
+
+    
+
 
 {% endblock %}
