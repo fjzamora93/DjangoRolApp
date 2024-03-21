@@ -21,20 +21,25 @@ def index(request):
         }
     )
 
-def potion_craft(request):
-  
+def ingredient_craft(request):
+    
     if request.method == "POST":
         print("Condición 0")
         form_ingrediente = IngredienteForm(request.POST)
         form_potion = PotionForm(request.POST)
         if form_ingrediente.is_valid():
             print("Condición 1")
-            ingrediente = form_ingrediente.cleaned_data["ingrediente"]
+
+            #Entre corchetes va el nombre del campo que quiero recuperar
+            ingrediente = form_ingrediente.cleaned_data["planta"]
+
+
             ingredientes.append(ingrediente)
-         
+
+            #request.session["lista"] es una lista que va a ir guardando los datos de sesión tal y como le diga.
             request.session["ingredientes"] = request.session.get("ingredientes", []) + [ingrediente]
 
-            return HttpResponseRedirect(reverse("potion_craft:index"))
+            return HttpResponseRedirect(reverse("potion_craft:potion"))
             
     
         else:
@@ -48,6 +53,32 @@ def potion_craft(request):
     "form_ingrediente": IngredienteForm(request.POST),
     "form_potion": PotionForm(),
 })
+
+def potion_craft(request):
+    if "ingredientes" not in request.session:
+        request.session["ingredientes"] = []
+    
+    return render(request, "potion_craft/potion.html",{
+        "ingredientes" : request.session["ingredientes"]
+    })
+    
+
+
+
+"""
+def lista(request):
+    if "tasks" not in request.session:
+        request.session["tasks"] = []
+
+    return render(request, "hello/lista.html", {
+        "tasks" : request.session["tasks"],
+        "tareas": tareas,
+        }
+    )
+
+"""
+
+
 """
 if request.method == "POST":
         form = NewTaskForm(request.POST)
@@ -69,4 +100,7 @@ if request.method == "POST":
 """
 
 
-#http://127.0.0.1:8000/hello/javi
+def borrar_datos_sesion(request):
+    if 'ingredientes' in request.session:
+        del request.session['ingredientes']
+    return HttpResponseRedirect(reverse("potion_craft:craft"))  # Redirecciona a la vista que desees después de borrar los datos de sesión

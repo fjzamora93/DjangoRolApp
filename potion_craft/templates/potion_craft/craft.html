@@ -8,13 +8,16 @@
 
 
     <h2> Alquimia lab</h2>
-
     
+    <form action="{% url 'potion_craft:craft' %}" method="post">
+        {% csrf_token %}
+
         <h3> Preparación de ingredientes </h3>
         <br>
         <label for ="id_ingrediente"> Elige un ingrediente </label>
             <br>{{ form_ingrediente.planta }}
         <br>
+        
 
         <br>
         <label for = "id_color"> ¿Cómo es el ingrediente? </label>
@@ -33,31 +36,6 @@
         <br>
 
         <input type="submit" value="Procesar tu ingrediente">
-
-  
-
-
-   
-        <h3> Potion Craft</h3>
-
-        <label for="id_esencias">Elige tu esencia:</label>
-        <br>
-        {{ form_potion.esencias }}
-        <br>
-
-        <label for="id_base">Elige tu base:</label>
-        <br>
-        {{ form_potion.base }}
-        <br>
-
-        <label for="id_potenciador">Elige un potenciador:</label>
-        <br>
-        {{ form_potion.potenciador }}
-        <br>
-
-        <input type="submit" value="Crear poción">
- 
-
     
 
 

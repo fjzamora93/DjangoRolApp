@@ -1,0 +1,11 @@
+{% extends "potion_craft/layout.html" %}
+{% load static %}
+{% block body %}
+
+<form action="{% url 'borrar_datos_sesion' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Borrar datos de sesión</button>
+</form>
+
+
+{% endblock %}
