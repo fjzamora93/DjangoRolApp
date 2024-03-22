@@ -24,34 +24,37 @@ def index(request):
 def ingredient_craft(request):
     
     if request.method == "POST":
-        print("Condición 0")
         form_ingrediente = IngredienteForm(request.POST)
-        form_potion = PotionForm(request.POST)
+       
         if form_ingrediente.is_valid():
             print("Condición 1")
 
-            #Entre corchetes va el nombre del campo que quiero recuperar
-            ingrediente = form_ingrediente.cleaned_data["planta"]
+            #Entre corchetes va el nombre del campo que quiero recuperar. 
+            #Recuerda que el método .cleaned_data[] te hace perder los label, así que usaremos fields y choices en su lugar
+            planta_value = form_ingrediente.cleaned_data['planta']
+            planta_label = dict(form_ingrediente.fields['planta'].choices)[planta_value]
 
+            dict_ingrediente = {planta_label :  planta_value}
 
-            ingredientes.append(ingrediente)
-
+            ingredientes.append(dict_ingrediente)
+            print(dict_ingrediente)
+            
+            if "ingredientes" not in request.session:
+                request.session["ingredientes"] = []
             #request.session["lista"] es una lista que va a ir guardando los datos de sesión tal y como le diga.
-            request.session["ingredientes"] = request.session.get("ingredientes", []) + [ingrediente]
+            request.session["ingredientes"] += [dict_ingrediente]
 
             return HttpResponseRedirect(reverse("potion_craft:potion"))
             
-    
         else:
             print("Condición 2")
             return render(request, "potion_craft/craft.html", {
                 "form_ingrediente": PotionForm(request.POST),
                 "form_potion": IngredienteForm(),
             })
-    print("Condición nula")
     return render(request, "potion_craft/craft.html", {
     "form_ingrediente": IngredienteForm(request.POST),
-    "form_potion": PotionForm(),
+    
 })
 
 def potion_craft(request):
@@ -103,4 +106,4 @@ if request.method == "POST":
 def borrar_datos_sesion(request):
     if 'ingredientes' in request.session:
         del request.session['ingredientes']
-    return HttpResponseRedirect(reverse("potion_craft:craft"))  # Redirecciona a la vista que desees después de borrar los datos de sesión
+    return HttpResponseRedirect(reverse("potion_craft:potion"))  # Redirecciona a la vista que desees después de borrar los datos de sesión

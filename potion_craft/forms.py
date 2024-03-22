@@ -62,14 +62,14 @@ class IngredienteForm(forms.Form):
 
 
     INGREDIENTES = [
-        ('opcion1', 'Raíz'),
-        ('opcion2', 'Hoja'),
-        ('opcion3', 'Tallo'),
-        ('opcion3', 'Flor'),
-        ('opcion3', 'Semilla'),
-        ('opcion3', 'Corteza'),
-        ('opcion3', 'Vulbo'),
-        ('opcion3', 'Seta'),
+        ('1', 'Raíz'),
+        ('2', 'Hoja'),
+        ('3', 'Tallo'),
+        ('4', 'Flor'),
+        ('5', 'Semilla'),
+        ('6', 'Corteza'),
+        ('7', 'Vulbo'),
+        ('8', 'Seta'),
     ]
 
     COLOR = [
@@ -127,8 +127,6 @@ class IngredienteForm(forms.Form):
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
 
-
-    
 
 
     def __init__(self, *args, **kwargs):

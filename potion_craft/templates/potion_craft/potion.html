@@ -7,12 +7,18 @@
 </form>
   
     <h3>Esta segunda lista usa el request.session</h3>
+
     <ul style=" list-style-type: none;">
         {% for ingr in ingredientes %}
-            <li>{{ ingr }}</li>
+            {% for key, value in ingr.items  %}
+                <li class="listado">
+                    <b>Ingrediente:</b> {{ key }}, <b>Valor:</b> {{ value }}
+                </li>
+            {% endfor %}
+
         {% empty %}
-            <li> "No hay ingredientes en este momento" </li>
-        {% endfor %}
+        <li>No hay ingredientes en este momento</li>
+    {% endfor %}
     </ul>
 
 

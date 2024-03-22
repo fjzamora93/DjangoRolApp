@@ -9,6 +9,6 @@ urlpatterns=[
     path("", views.index, name="index"), #Cuando alguien visite la url vacía, verá la index.
     path("craft", views.ingredient_craft, name="craft"),
     path("potion", views.potion_craft, name="potion"),
-    path('borrar-datos-sesion/', views.borrar_datos_sesion, name='borrar_datos_sesion'),
+    path('borrar/', views.borrar_datos_sesion, name='borrar'),
 ]
 

@@ -9,6 +9,11 @@ p, h1,  h3, h4{
     font-size: 2em;
 }
 
+li, .listado {
+    font-family: Papyrus, fantasy;
+    font-size: 20px;
+}
+
 .fuente-antigua{
     font-family: "Antiqua", serif;
 }
