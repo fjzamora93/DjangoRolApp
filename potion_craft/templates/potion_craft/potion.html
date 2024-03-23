@@ -26,21 +26,26 @@
 
     <h3> Potion Craft</h3>
 
-    <label for="id_esencias">Elige tu esencia:</label>
-    <br>
-    {{ form_potion.esencias }}
-    <br>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_esencias">Elige tu esencia:</label>
+        
+        <br>{{ form_potion.esencias }} <br>
 
-    <label for="id_base">Elige tu base:</label>
-    <br>
-    {{ form_potion.base }}
-    <br>
+        <label for="id_base">Elige tu base:</label>
+        
+        <br>{{ form_potion.base }}<br>
+        
+        <label for="id_potenciador">Elige un potenciador:</label>
+        
+        <br>{{ form_potion.potenciador }}<br>
 
-    <label for="id_potenciador">Elige un potenciador:</label>
-    <br>
-    {{ form_potion.potenciador }}
-    <br>
+        <label for="id_dado">El dado:</label>
+        
+        <br>{{ form_potion.dado }}<br>
+       
 
-<input type="submit" value="Crear poción">
+        <input type="submit" value="Crear poción">
+    </form>
 
 {% endblock %}

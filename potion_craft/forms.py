@@ -1,5 +1,18 @@
 # en forms.py
 from django import forms
+import random
+
+
+class ReadOnlyIntegerField(forms.IntegerField):
+
+    def __init__(self, initial=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.initial = random.randint(1,20)
+
+    def widget_attrs(self, widget):
+        attrs = super().widget_attrs(widget)
+        attrs['readonly'] = True
+        return attrs
 
 class PotionForm(forms.Form):
     subject = forms.CharField(max_length=100, 
@@ -46,6 +59,8 @@ class PotionForm(forms.Form):
                                  label="¿Cómo vas a potenciar tu poción?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
+    dado = ReadOnlyIntegerField()
+    
    
 
     def __init__(self, *args, **kwargs):
@@ -59,8 +74,6 @@ class PotionForm(forms.Form):
 
 class IngredienteForm(forms.Form):
 
-
-
     INGREDIENTES = [
         ('1', 'Raíz'),
         ('2', 'Hoja'),
@@ -69,45 +82,39 @@ class IngredienteForm(forms.Form):
         ('5', 'Semilla'),
         ('6', 'Corteza'),
         ('7', 'Vulbo'),
-        ('8', 'Seta'),
+        ('8', 'Micelio'),
     ]
 
     COLOR = [
-        ('opcion1', 'Violeta'),
-        ('opcion2', 'Azul'),
-        ('opcion3', 'Turquesa'),
-        ('opcion3', 'Verde'),
-        ('opcion1', 'Amarillo'),
-        ('opcion2', 'Marrón'),
-        ('opcion3', 'Naranja'),
-        ('opcion3', 'Rojo'),
+        ('aire-fuego', 'Violeta'),
+        ('aire', 'Azul'),
+        ('agua-aire', 'Turquesa'),
+        ('agua', 'Verde'),
+        ('tierra-agua', 'Amarillo'),
+        ('tierra', 'Marrón'),
+        ('fuego-tierra', 'Naranja'),
+        ('fuego', 'Rojo'),
     ]
 
     """
-    El procesamiento solo tiene en cuenta el color.
-    -Azul, violeta: fermentar
-    -verde, turquesa: destilar
-    -amarillo, marrón: secar
-    -naranja, rojo: prender
-
-    El nombre del ingrediente no sirve de nada, solo es para el juego.
-    Si un ingrediente se procesa de forma adecuada, el ingrediente se perderá.
-    
-    DE otra forma, el ingrediente dará la esencia correspondiente.
+    A partir de aquí se podría hacer una condición:
+    if "value del color" not in "value del procesamiento"... ¡Fail!
+    else --- if 'aire' in 'valor del color' ... esencia obtenida += la qu ecorresponda.
+    Es importante tener en cuenta que puedan salir hasta dos.
     """
     PROCESAMIENTO = [
-        ('opcion1', 'Fermentar'),
-        ('opcion2', 'Prender'),
-        ('opcion3', 'Secar'),
-        ('opcion3', 'Destilar'),
+        ('aire', 'Fermentar'),
+        ('fuego', 'Prender'),
+        ('tierra', 'Secar'),
+        ('agua', 'Destilar'),
     ]
 
     HERRAMIENTAS = [
-        ('opcion1', 'Mortero'),                 #value +1
-        ('opcion2', 'Cuchillo afilado'),        #value +2
-        ('opcion3', 'Tomo de alquimia'),        #value +3
-        ('opcion4', 'Manuscrito desfasado'),    #value -2 (0 esencias)
-        ('opcion5', 'Cuchillo oxidado'),        #value -1 (solo 1 esencia)
+        ('1', 'Mortero'),                
+        ('2', 'Cuchillo afilado'),        
+        ('3', 'Tomo de alquimia'),        
+        ('-2', 'Manuscrito desfasado'),    
+        ('-1', 'Cuchillo oxidado'),        
     ]
 
     planta = forms.ChoiceField(choices=INGREDIENTES, 
@@ -126,8 +133,6 @@ class IngredienteForm(forms.Form):
                                  label="¿Qué herramientas tienes?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
-
-
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import datetime
+import datetime, random
 from django import forms
 
 #importamos esto, para que podamos usar el HttpResponse.
@@ -27,8 +27,6 @@ def ingredient_craft(request):
         form_ingrediente = IngredienteForm(request.POST)
        
         if form_ingrediente.is_valid():
-            print("Condición 1")
-
             #Entre corchetes va el nombre del campo que quiero recuperar. 
             #Recuerda que el método .cleaned_data[] te hace perder los label, así que usaremos fields y choices en su lugar
             planta_value = form_ingrediente.cleaned_data['planta']
@@ -50,21 +48,49 @@ def ingredient_craft(request):
             print("Condición 2")
             return render(request, "potion_craft/craft.html", {
                 "form_ingrediente": PotionForm(request.POST),
-                "form_potion": IngredienteForm(),
+              
             })
     return render(request, "potion_craft/craft.html", {
     "form_ingrediente": IngredienteForm(request.POST),
     
 })
 
+import random
+from django.shortcuts import render
+from .forms import PotionForm
+
 def potion_craft(request):
     if "ingredientes" not in request.session:
         request.session["ingredientes"] = []
-    
-    return render(request, "potion_craft/potion.html",{
-        "ingredientes" : request.session["ingredientes"]
+
+    if request.method == "POST":
+        form_potion = PotionForm(request.POST)
+        if form_potion.is_valid():
+            dado = form_potion.cleaned_data['dado']
+            if "potion" not in request.session:
+                request.session["potion"] = []
+            request.session["potion"] += [dado]
+            
+    else:
+        # Genera un número aleatorio para el campo dado y asigna su valor inicial
+        form_potion = PotionForm(initial={'dado': random.randint(1, 20)})
+        print("SOLICITUD PROCESADA!!!", form_potion)
+
+    return render(request, "potion_craft/potion.html", {
+        "ingredientes": request.session["ingredientes"],
+        "form_potion": form_potion,
     })
+
+
     
+
+
+
+def borrar_datos_sesion(request):
+    if 'ingredientes' in request.session:
+        del request.session['ingredientes']
+    return HttpResponseRedirect(reverse("potion_craft:potion"))  # Redirecciona a la vista que desees después de borrar los datos de sesión
+
 
 
 
@@ -101,9 +127,3 @@ if request.method == "POST":
     })
 
 """
-
-
-def borrar_datos_sesion(request):
-    if 'ingredientes' in request.session:
-        del request.session['ingredientes']
-    return HttpResponseRedirect(reverse("potion_craft:potion"))  # Redirecciona a la vista que desees después de borrar los datos de sesión
