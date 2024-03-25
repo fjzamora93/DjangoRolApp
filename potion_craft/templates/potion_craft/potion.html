@@ -9,15 +9,12 @@
     <h3>Esta segunda lista usa el request.session</h3>
 
     <ul style=" list-style-type: none;">
-        {% for ingr in ingredientes %}
-            {% for key, value in ingr.items  %}
-                <li class="listado">
-                    <b>Ingrediente:</b> {{ key }}, <b>Valor:</b> {{ value }}
-                </li>
-            {% endfor %}
-
+        {% for esencia in ingredientes %}
+            <li class="listado">
+                <b>Esencias obtenidas:</b> {{ esencia }}
+            </li>
         {% empty %}
-        <li>No hay ingredientes en este momento</li>
+        <li>No hay esencias en este momento</li>
     {% endfor %}
     </ul>
 
@@ -29,23 +26,27 @@
     <form method="post">
         {% csrf_token %}
         <label for="id_esencias">Elige tu esencia:</label>
-        
-        <br>{{ form_potion.esencias }} <br>
+            <br>{{ form_potion.esencias }} <br>
 
         <label for="id_base">Elige tu base:</label>
+            <br>{{ form_potion.base }}<br>
         
-        <br>{{ form_potion.base }}<br>
+        <label for="id_potenciador">Y el ingrediente secreto es...</label>
+            <br>{{ form_potion.alter }}<br>
         
-        <label for="id_potenciador">Elige un potenciador:</label>
+        <label for="id_conocimiento">Un buen libro siempre ayuda:</label>
+            <br>{{ form_potion.conocimiento }}<br>
         
-        <br>{{ form_potion.potenciador }}<br>
+        <label for="id_util">¿Has limpiado bien esa probeta?</label>
+            <br>{{ form_potion.util }}<br>
 
         <label for="id_dado">El dado:</label>
-        
-        <br>{{ form_potion.dado }}<br>
+            <br>{{ form_potion.dado }}<br>
        
 
         <input type="submit" value="Crear poción">
     </form>
+
+    
 
 {% endblock %}

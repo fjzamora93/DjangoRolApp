@@ -5,14 +5,18 @@
 
 {% block body %}
     
-    <h2>¿Es año nuevo?</h2>
+   
 
     <div>
-        {% if newyear %}
-            <h3> Sí </h3>
-        {% else %}
-            <h3> No </h3>
-        {% endif %}
+        <ul style=" list-style-type: none;">
+            {% for efecto in potion_form %}
+                <li class="listado">
+                    <b>Esencias obtenidas:</b> {{ efecto }}
+                </li>
+            {% empty %}
+            <li>No hay esencias en este momento</li>
+            {% endfor %}
+        </ul>
     </div>
 
 

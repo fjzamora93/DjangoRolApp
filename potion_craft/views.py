@@ -6,46 +6,50 @@ from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .forms import *
+from potion_craft.utils import procesar_datos as proc
 
 # Create your views here.
 
 #En esta función vamos a ver cómo insertar y crear varibles en HTML desde Python. 
 
-ingredientes = []
+
+esencias = []
 
 def index(request):
     #Paso 1, definimos la variable
     now = datetime.datetime.now()
     return render(request, "potion_craft/index.html", {
-        "newyear": now.month == 1 and now.day == 1
+        "newyear": now.month == 1 and now.day == 1,
+        "potion_form": request.session["potion"]
         }
     )
 
 def ingredient_craft(request):
-    
     if request.method == "POST":
         form_ingrediente = IngredienteForm(request.POST)
        
         if form_ingrediente.is_valid():
             #Entre corchetes va el nombre del campo que quiero recuperar. 
             #Recuerda que el método .cleaned_data[] te hace perder los label, así que usaremos fields y choices en su lugar
-            planta_value = form_ingrediente.cleaned_data['planta']
-            planta_label = dict(form_ingrediente.fields['planta'].choices)[planta_value]
+            ingr = form_ingrediente.cleaned_data['ingr']
+            color = form_ingrediente.cleaned_data['color']
+            proceso = form_ingrediente.cleaned_data['proceso']
+            herramienta = form_ingrediente.cleaned_data['herramienta']
+            
 
-            dict_ingrediente = {planta_label :  planta_value}
-
-            ingredientes.append(dict_ingrediente)
-            print(dict_ingrediente)
+            esencia = proc.procesar_datos_ingredientes(ingr, color, proceso, herramienta)
+            esencias.append(esencia)
+            print(esencia)
             
             if "ingredientes" not in request.session:
                 request.session["ingredientes"] = []
             #request.session["lista"] es una lista que va a ir guardando los datos de sesión tal y como le diga.
-            request.session["ingredientes"] += [dict_ingrediente]
+            request.session["ingredientes"] += [esencia]
 
             return HttpResponseRedirect(reverse("potion_craft:potion"))
             
         else:
-            print("Condición 2")
+            print("Formulario NO válido")
             return render(request, "potion_craft/craft.html", {
                 "form_ingrediente": PotionForm(request.POST),
               
@@ -60,25 +64,47 @@ from django.shortcuts import render
 from .forms import PotionForm
 
 def potion_craft(request):
+   
     if "ingredientes" not in request.session:
         request.session["ingredientes"] = []
-
-    if request.method == "POST":
-        form_potion = PotionForm(request.POST)
-        if form_potion.is_valid():
-            dado = form_potion.cleaned_data['dado']
-            if "potion" not in request.session:
+    if "potion" not in request.session:
                 request.session["potion"] = []
-            request.session["potion"] += [dado]
+
+    
+    if request.method == "POST":
+        print("CONDICIÓN 1")
+        form_potion = PotionForm(request.POST)
+        
+        if form_potion.is_valid():
+            print("FORMULARIO VÁLIDO")
+            dado = form_potion.cleaned_data['dado']
+            base = form_potion.cleaned_data['base']
+            alter = form_potion.cleaned_data['alter']
+            conocimiento = form_potion.cleaned_data['conocimiento']
+            util = form_potion.cleaned_data['util']
+            esencias = form_potion.cleaned_data['esencias']
+
+            resultado_pocion = proc.procesar_datos_pocion(base, alter, conocimiento, util, dado, esencias)
             
+            request.session["potion"] += [resultado_pocion]
+            print(resultado_pocion)
+            return HttpResponseRedirect(reverse("potion_craft:index"))
+            
+        else:
+            print(form_potion.errors)
+            
+            return render(request, "potion_craft/potion.html", {
+                    "form_potion": PotionForm(request.POST),
+                })
+    
     else:
-        # Genera un número aleatorio para el campo dado y asigna su valor inicial
-        form_potion = PotionForm(initial={'dado': random.randint(1, 20)})
-        print("SOLICITUD PROCESADA!!!", form_potion)
+        form_potion = PotionForm(initial={'dado': 11})
+
 
     return render(request, "potion_craft/potion.html", {
         "ingredientes": request.session["ingredientes"],
         "form_potion": form_potion,
+        
     })
 
 
@@ -89,6 +115,7 @@ def potion_craft(request):
 def borrar_datos_sesion(request):
     if 'ingredientes' in request.session:
         del request.session['ingredientes']
+        del request.session['potion']
     return HttpResponseRedirect(reverse("potion_craft:potion"))  # Redirecciona a la vista que desees después de borrar los datos de sesión
 
 

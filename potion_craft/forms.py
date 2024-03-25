@@ -15,59 +15,95 @@ class ReadOnlyIntegerField(forms.IntegerField):
         return attrs
 
 class PotionForm(forms.Form):
-    subject = forms.CharField(max_length=100, 
-                              label='Tu nombre', 
-                              widget=forms.TextInput(attrs={'class': 'form-control'}))
+    # subject = forms.CharField(max_length=100, 
+    #                           label='Tu nombre', 
+    #                           widget=forms.TextInput(attrs={'class': 'form-control'}))
     
     ESENCIAS = [
-        ('opcion1', 'Esencia acuosa'),
-        ('opcion2', 'Esencia ígnea'),
-        ('opcion3', 'Esencia terrosa'),
-        ('opcion3', 'Esencia volátil'),
+        #('0', 'Ninguna'),
+        ('1', 'Esencia volátil'),
+        ('2', 'Esencia acuosa'),
+        ('3', 'Esencia terrosa'),
+        ('4', 'Esencia ígnea'),
     
     ]
 
-    BASE = [
-        ('opcion1', 'Agua'),
-        ('opcion2', 'Agua destilada'), # +2 de probabilidad éxito
-        ('opcion3', 'Agua sucia'), # -2 de probabilidad de éxito
-        ('opcion3', 'Agua bendita'), # +5 de probabilidad de éxito
-        ('opcion3', 'Agua corrupta'), #-5 de probabilidad de éxito
-        ('opcion3', 'Aceite'), #+3 de probabilidad de éxito
-        ('opcion3', 'Aceite esencial'), # +4 de probabilidad de éxito
-    ]
 
+    BASE = [
+        ('0', 'Agua'),
+        ('2', 'Agua destilada'),
+        ('4', 'Aceite'), 
+        ('6', 'Aceite esencial'),
+        ('8', 'Agua bendita'),
+        ('-2', 'Agua sucia'), 
+        ('-4', 'Agua contaminada'),
+        ('-6', 'Agua maldita'), 
+    ]
 
     POTENCIADOR = [
-        ('opcion1', 'Lirio Rojo'), #Corrompe la poción y da el efecto negativo
-        ('opcion2', 'Potenciador puro'), # Da el efecto beneficioso
+        ('0', 'Sin alteraciones'), 
+        ('1', 'Ingrediente corrupto'), 
+        ('2', 'Ingrediente sospechoso'), 
     ]
 
+    UTILES = [
+        ('-5', 'Sin herramientas'), 
+        ('-3', 'Kit de alquimia desgastado'), 
+        ('0', 'Kit de alquimia básico'), 
+        ('2', 'Kit de alquimia completo'), 
+        ('4', 'Kit de maestro alquimista'),
+        ('6', 'Laboratorio'),
+    ]
 
+    CONOCIMIENTOS = [
+        ('-5', 'De memoria'), 
+        ('0', 'Alquimia para principiantes'), 
+        ('2', 'Manual de alquimia avanzado'), 
+        ('4', 'Ars Alquimica'), 
+        ('6', 'Gran grimorio de El Alquimista'), 
+    ]
 
-    #message = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+    CANTIDAD = [
+        ('1', '1 esencia'), 
+        ('2', '2 esencias'), 
+        ('3', '3 esencias'), 
+    ]
 
-    esencias = forms.ChoiceField(choices=ESENCIAS, 
-                                 label="Elige tu esencia",
-                                 widget=forms.Select(attrs={'class': 'form-control'}))
+    esencias = forms.MultipleChoiceField(choices=ESENCIAS,
+                                         label="Elige tu esencia",
+                                         widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}))
 
     base = forms.ChoiceField(choices=BASE, 
                                  label="¿Qué base líquida vas a usar para tu poción?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
-    potenciador = forms.ChoiceField(choices=POTENCIADOR, 
-                                 label="¿Cómo vas a potenciar tu poción?",
+    alter = forms.ChoiceField(choices=POTENCIADOR, 
+                                 label="¿Vas a alterar tu poción?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
-    dado = ReadOnlyIntegerField()
+    conocimiento = forms.ChoiceField(choices=CONOCIMIENTOS, 
+                                 label="¿Vas a alterar tu poción?",
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
     
+    util = forms.ChoiceField(choices=UTILES, 
+                                 label="¿Vas a alterar tu poción?",
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
+    
+    #!SIN USAR ACTUALMENTE
+    # cantidad = forms.ChoiceField(choices=CANTIDAD, 
+    #                              label="¿Cuántas esencias vas a usar?",
+    #                              widget=forms.Select(attrs={'class': 'form-control'}))
+    
+    #dado = ReadOnlyIntegerField()
+    dado = forms.IntegerField(min_value = 0, initial=11)
    
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Cambiar el mensaje de required
+      
         for field in self.fields.values():
-            field.error_messages['required'] = 'Selecciona'
+            field.error_messages['required'] = 'Acuérdate de elegir!'
+
 
 
 
@@ -102,7 +138,7 @@ class IngredienteForm(forms.Form):
     else --- if 'aire' in 'valor del color' ... esencia obtenida += la qu ecorresponda.
     Es importante tener en cuenta que puedan salir hasta dos.
     """
-    PROCESAMIENTO = [
+    PROCESO = [
         ('aire', 'Fermentar'),
         ('fuego', 'Prender'),
         ('tierra', 'Secar'),
@@ -110,14 +146,14 @@ class IngredienteForm(forms.Form):
     ]
 
     HERRAMIENTAS = [
-        ('1', 'Mortero'),                
-        ('2', 'Cuchillo afilado'),        
-        ('3', 'Tomo de alquimia'),        
-        ('-2', 'Manuscrito desfasado'),    
-        ('-1', 'Cuchillo oxidado'),        
+        ('0', 'Cuchillo oxidado'),
+        ('1', 'Manuscrito desfasado'),    
+        ('2', 'Mortero'),                
+        ('3', 'Cuchillo afilado'),        
+        ('4', 'Libro de plantas'),         
     ]
 
-    planta = forms.ChoiceField(choices=INGREDIENTES, 
+    ingr = forms.ChoiceField(choices=INGREDIENTES, 
                                  label="Elige tus ingredientes",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
@@ -125,7 +161,7 @@ class IngredienteForm(forms.Form):
                                  label="¿Cómo es el ingrediente?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
-    procesamiento = forms.ChoiceField(choices=PROCESAMIENTO, 
+    proceso = forms.ChoiceField(choices=PROCESO, 
                                  label="¿Cómo vas a procesar el ingrediente?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
