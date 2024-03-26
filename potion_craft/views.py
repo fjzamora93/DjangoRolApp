@@ -7,22 +7,32 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .forms import *
 from potion_craft.utils import procesar_datos as proc
-
-# Create your views here.
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 #En esta función vamos a ver cómo insertar y crear varibles en HTML desde Python. 
 
 
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "registration/signup.html"
+
 esencias = []
 
 def index(request):
-    #Paso 1, definimos la variable
-    now = datetime.datetime.now()
+    if "potion" not in request.session:
+        request.session["potion"] = []
     return render(request, "potion_craft/index.html", {
-        "newyear": now.month == 1 and now.day == 1,
         "potion_form": request.session["potion"]
         }
     )
+
+def inventario(request):
+     return render(request, "potion_craft/inventario.html", {
+          
+     })
 
 def ingredient_craft(request):
     if request.method == "POST":

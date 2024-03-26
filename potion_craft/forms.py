@@ -3,6 +3,9 @@ from django import forms
 import random
 
 
+
+
+
 class ReadOnlyIntegerField(forms.IntegerField):
 
     def __init__(self, initial=None, *args, **kwargs):
