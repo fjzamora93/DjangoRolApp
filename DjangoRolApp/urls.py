@@ -26,6 +26,7 @@ urlpatterns = [
 
     #URL DE AUTENTICACIÓN
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('accounts.urls')),
 
     path('', TemplateView.as_view(template_name="potion_craft/index.html"), name="index"),
 ]
