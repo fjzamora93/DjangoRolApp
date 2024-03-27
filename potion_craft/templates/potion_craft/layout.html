@@ -4,7 +4,6 @@
 <html lang="en">
 <head>
     
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -13,10 +12,25 @@
     <link href="{% static 'potion_craft/style-potion.css' %}" rel="stylesheet">
 
 
-
 </head>
 
 <header>
+
+       <!---LOGIN Y SIGN UP-->
+       <div class="login">
+        {% if user.is_authenticated %}
+            Hi {{ user.username }}!
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Log Out</button>
+            </form>
+        {% else %}
+            <span>You are not logged in     | </span>
+            <a href="{% url 'login' %}">Log In</a> or <a href="{% url 'accounts:signup' %}">Sign Up</a>
+        {% endif %}
+    </div>
+
+
          
     <ul class="menu">
         <li> <a href="{% url 'potion_craft:index' %}"> Home </a></li>

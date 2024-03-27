@@ -19,7 +19,7 @@ urlpatterns=[
     path('borrar/', views.borrar_datos_sesion, name='borrar'),
     path('admin/', admin.site.urls),
 
-    path("signup/", SignUpView.as_view(), name="signup"),
+    #path("signup/", SignUpView.as_view(), name="signup"),
 
 ]
 

@@ -118,8 +118,6 @@ def potion_craft(request):
     })
 
 
-    
-
 
 
 def borrar_datos_sesion(request):
