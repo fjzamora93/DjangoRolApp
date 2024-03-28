@@ -31,6 +31,8 @@ class CharacterForm(forms.ModelForm):
     ]
     IMAGENES = [
     ('potion_craft/img/portraits/Eric.png', 'Imagen 1'),
+    ('potion_craft/img/portraits/humano-bardo-3.png', 'Imagen 2'),
+    ('potion_craft/img/portraits/humano-clerigo-3.png', 'Imagen 3'),
     # Agrega más imágenes aquí según sea necesario
 ]
 

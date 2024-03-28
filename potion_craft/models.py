@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Personaje(models.Model):
-    nombre = models.CharField(max_length = 25)
+    nombre = models.CharField(max_length = 25, unique=True)
     clase = models.CharField(max_length = 25, null=True, blank=True)
     portrait = models.CharField(max_length = 150, null=True, blank=True)
     def __str__(self):

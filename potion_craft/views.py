@@ -1,8 +1,6 @@
 from django.shortcuts import render
 import datetime, random
 from django import forms
-
-#importamos esto, para que podamos usar el HttpResponse.
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .forms import *
@@ -10,10 +8,7 @@ from potion_craft.utils import procesar_datos as proc
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-
 from accounts.models import UserProfile
-
-#En esta función vamos a ver cómo insertar y crear varibles en HTML desde Python. 
 
 
 class SignUpView(CreateView):
@@ -21,73 +16,68 @@ class SignUpView(CreateView):
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
-esencias = []
 
 def index(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
         print("INTENTO CON ÉXITO: ", user_profile.nombre )
-        
     except UserProfile.DoesNotExist:
         user_profile = None
-        print("NO HAY PERFIL DE USUARIO")
-
     if "potion" not in request.session:
         request.session["potion"] = []
     return render(request, "potion_craft/index.html", {
         "potion_form": request.session["potion"],
         "user_profile": user_profile
-        }
-    )
+        })
 
 def character_creator(request):
+    form = CharacterForm()
+    if request.method == "POST":
+        form = CharacterForm(request.POST)
+        if form.is_valid():
+            print("FORMULARIO DE CREACIÓN DE PERSONAJE VALIDADO!!")
+            form.save()
+            return HttpResponseRedirect(reverse("potion_craft:inventario"))
+        else:
+            print(form.errors)
+            
+
     return render(request, "potion_craft/character_creator.html",{
-        "form": CharacterForm()
+        "form": form
     })
+
+
+def ingredient_craft(request):
+    esencias = []
+    if request.method == "POST":
+        form_ingrediente = IngredienteForm(request.POST)
+        if form_ingrediente.is_valid():
+            ingr = form_ingrediente.cleaned_data['ingr']
+            color = form_ingrediente.cleaned_data['color']
+            proceso = form_ingrediente.cleaned_data['proceso']
+            herramienta = form_ingrediente.cleaned_data['herramienta']
+            esencia = proc.procesar_datos_ingredientes(ingr, color, proceso, herramienta)
+            esencias.append(esencia)
+            if "ingredientes" not in request.session:
+                request.session["ingredientes"] = []
+    
+            request.session["ingredientes"] += [esencia]
+
+            return HttpResponseRedirect(reverse("potion_craft:potion"))
+            
+        else:
+            print(form_ingrediente.errors)
+           
+    return render(request, "potion_craft/craft.html", {
+    "form_ingrediente": IngredienteForm(request.POST),
+    
+})
 
 def inventario(request):
      return render(request, "potion_craft/inventario.html", {
           
      })
 
-def ingredient_craft(request):
-    if request.method == "POST":
-        form_ingrediente = IngredienteForm(request.POST)
-       
-        if form_ingrediente.is_valid():
-            #Entre corchetes va el nombre del campo que quiero recuperar. 
-            #Recuerda que el método .cleaned_data[] te hace perder los label, así que usaremos fields y choices en su lugar
-            ingr = form_ingrediente.cleaned_data['ingr']
-            color = form_ingrediente.cleaned_data['color']
-            proceso = form_ingrediente.cleaned_data['proceso']
-            herramienta = form_ingrediente.cleaned_data['herramienta']
-            
-
-            esencia = proc.procesar_datos_ingredientes(ingr, color, proceso, herramienta)
-            esencias.append(esencia)
-            print(esencia)
-            
-            if "ingredientes" not in request.session:
-                request.session["ingredientes"] = []
-            #request.session["lista"] es una lista que va a ir guardando los datos de sesión tal y como le diga.
-            request.session["ingredientes"] += [esencia]
-
-            return HttpResponseRedirect(reverse("potion_craft:potion"))
-            
-        else:
-            print("Formulario NO válido")
-            return render(request, "potion_craft/craft.html", {
-                "form_ingrediente": PotionForm(request.POST),
-              
-            })
-    return render(request, "potion_craft/craft.html", {
-    "form_ingrediente": IngredienteForm(request.POST),
-    
-})
-
-import random
-from django.shortcuts import render
-from .forms import PotionForm
 
 def potion_craft(request):
    
