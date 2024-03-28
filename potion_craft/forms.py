@@ -1,37 +1,57 @@
 # en forms.py
 from django import forms
 import random
-
-
-
+from .models import Personaje
 
 
 class ReadOnlyIntegerField(forms.IntegerField):
-
     def __init__(self, initial=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.initial = random.randint(1,20)
-
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)
         attrs['readonly'] = True
         return attrs
 
+
+#!VERIFICAR QUE ESTÁ BIEN ESTRUCTURADO
+class CharacterForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update({
+            'placeholder': 'Escribe el nombre de tu pesonaje'
+        })
+
+    CLASES = [
+        ('Guerrero', 'Guerrero'),
+        ('Mago', 'Mago'),
+        ('Explorador', 'Explorador'),
+        ('Clérigo', 'Clérigo'),
+        ('Bardo', 'Bardo'),
+    ]
+    IMAGENES = [
+    ('potion_craft/img/portraits/Eric.png', 'Imagen 1'),
+    # Agrega más imágenes aquí según sea necesario
+]
+
+    nombre = forms.CharField(label='Nombre')
+    clase = forms.ChoiceField(choices=CLASES, label="¿Qué clase eres?",
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
+    portrait = forms.ChoiceField(choices=IMAGENES, label='Foto', widget=forms.Select(attrs={'class': 'form-control'}))
+   
+    class Meta:
+        model = Personaje
+        fields = ['nombre', 'clase', 'portrait']
+
+
 class PotionForm(forms.Form):
-    # subject = forms.CharField(max_length=100, 
-    #                           label='Tu nombre', 
-    #                           widget=forms.TextInput(attrs={'class': 'form-control'}))
-    
     ESENCIAS = [
         #('0', 'Ninguna'),
         ('1', 'Esencia volátil'),
         ('2', 'Esencia acuosa'),
         ('3', 'Esencia terrosa'),
         ('4', 'Esencia ígnea'),
-    
     ]
-
-
     BASE = [
         ('0', 'Agua'),
         ('2', 'Agua destilada'),
@@ -42,13 +62,11 @@ class PotionForm(forms.Form):
         ('-4', 'Agua contaminada'),
         ('-6', 'Agua maldita'), 
     ]
-
     POTENCIADOR = [
         ('0', 'Sin alteraciones'), 
         ('1', 'Ingrediente corrupto'), 
         ('2', 'Ingrediente sospechoso'), 
     ]
-
     UTILES = [
         ('-5', 'Sin herramientas'), 
         ('-3', 'Kit de alquimia desgastado'), 
@@ -57,7 +75,6 @@ class PotionForm(forms.Form):
         ('4', 'Kit de maestro alquimista'),
         ('6', 'Laboratorio'),
     ]
-
     CONOCIMIENTOS = [
         ('-5', 'De memoria'), 
         ('0', 'Alquimia para principiantes'), 
@@ -65,13 +82,11 @@ class PotionForm(forms.Form):
         ('4', 'Ars Alquimica'), 
         ('6', 'Gran grimorio de El Alquimista'), 
     ]
-
     CANTIDAD = [
         ('1', '1 esencia'), 
         ('2', '2 esencias'), 
         ('3', '3 esencias'), 
     ]
-
     esencias = forms.MultipleChoiceField(choices=ESENCIAS,
                                          label="Elige tu esencia",
                                          widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}))
@@ -92,12 +107,6 @@ class PotionForm(forms.Form):
                                  label="¿Vas a alterar tu poción?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     
-    #!SIN USAR ACTUALMENTE
-    # cantidad = forms.ChoiceField(choices=CANTIDAD, 
-    #                              label="¿Cuántas esencias vas a usar?",
-    #                              widget=forms.Select(attrs={'class': 'form-control'}))
-    
-    #dado = ReadOnlyIntegerField()
     dado = forms.IntegerField(min_value = 0, initial=11)
    
 

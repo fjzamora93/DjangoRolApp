@@ -11,6 +11,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+from accounts.models import UserProfile
+
 #En esta función vamos a ver cómo insertar y crear varibles en HTML desde Python. 
 
 
@@ -22,12 +24,26 @@ class SignUpView(CreateView):
 esencias = []
 
 def index(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        print("INTENTO CON ÉXITO: ", user_profile.nombre )
+        
+    except UserProfile.DoesNotExist:
+        user_profile = None
+        print("NO HAY PERFIL DE USUARIO")
+
     if "potion" not in request.session:
         request.session["potion"] = []
     return render(request, "potion_craft/index.html", {
-        "potion_form": request.session["potion"]
+        "potion_form": request.session["potion"],
+        "user_profile": user_profile
         }
     )
+
+def character_creator(request):
+    return render(request, "potion_craft/character_creator.html",{
+        "form": CharacterForm()
+    })
 
 def inventario(request):
      return render(request, "potion_craft/inventario.html", {

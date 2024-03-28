@@ -2,10 +2,19 @@
 {% extends "potion_craft/layout.html" %}
 {% load static %}
 
-<!----Recursos: https://itch.io/search?q=potion+sprites-->
+<!----Recursos: 
+    IMÁGENES Y SPRITES GRATIS: https://itch.io/search?q=potion+sprites
+    HTML: https://getbootstrap.com/docs/5.3/getting-started/introduction/
+
+
+-->
 
 {% block body %}
     
+    <span>Hola! 
+        <br><span>Nombre de Usuario: {{ user_profile.user.username }}</span>
+        <br><span>Nombre del perfil: {{ user_profile.nombre }}</span>
+    </span>
 
     <div>
         <ul style=" list-style-type: none;">
@@ -25,69 +34,9 @@
 
     <div clas="cabecera">
         
-        
-        <img class ="dibujo" src="{% static 'potion_craft/img/hello.svg' %}">
-       
-
-        <div class="presentacion">
-            <h3> HELLO!</h3>
-            <h2>I’m Javier Zamora</h2>
-            <h3>Aspiring Developer & Web Designer</h3>
-
-            <ul class="rrss">
-                <a href="https://github.com/fjzamora93" target="_blank">
-                    <li><img src="icon/github.png" alt="rrss"></li>
-                </a>
-                   
-                <a href="https://www.linkedin.com/in/fjzamora/" target="_blank">
-                    <li><img src="icon/logotipo-de-linkedin.png" alt="rrss"></li>
-                </a>
-                    
-                <a href="https://www.instagram.com/elgatobarista/">
-                    <li><img src="icon/logo-instagram.png" alt="rrss"></li>
-                </a>
-            </ul>
-        </div>
-
-        
-    </div>
-
-    <div id="about">
-        
-        <h2>About me...</h2>
-        <div class="presentacion"> 
-            Una vez escuché eso de si creía que la Inteligencia Artificial pondría fin a nuestra creatividad. 
-            Puede que sea así, quizás me tiente la idea de averiguarlo.
-             Mientras tanto, sigamos explorando con la inventiva humana.
-      
-            <br><br>Más allá de la programación como un trabajo, creo en esto como un modo de vida. 
-            Sé que muchos de los adictos a las infinitas líneas de código lo pueden entender: 
-            conseguir que cada proceso, cada interacción acabe cobrando vida.
-       
-            <br><br>Actualmente, me sigo formando como desarrollador, con bastante interés en la Inteligencia Artificial 
-            y el análisis de datos (aunque mentiría si digo que no me gusta el diseño). ¿Mi filosofía?
-
-            <br><br>"Simple is better than complex.
-            <br>Complex is better than complicated.
-            <br>In the face of ambiguity, refuse the temptation to guess."
-            <br>---Zen of Python. 
-
-        </div>
-        <image class ="dibujo" src="img/avatar.png">
-
-
-    </div>
-
-    <div>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    </div>
-
-    <div id="skills">
-        Esto son mis habilidades o skills
-    </div>
     
+        <img class ="dibujo" src="{% static 'potion_craft/img/portraits/Eric.png' %}">
+       
+
 
 {% endblock %}

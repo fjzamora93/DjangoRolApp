@@ -19,7 +19,7 @@
        <!---LOGIN Y SIGN UP-->
        <div class="login">
         {% if user.is_authenticated %}
-            Hi {{ user.username }}!
+            Hi {{ user.username }} !
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit">Log Out</button>
@@ -37,7 +37,7 @@
         <li> <a href="{% url 'potion_craft:craft' %}"> Ingredientes </a></li>
         <li> <a href="{% url 'potion_craft:potion' %}"> Pociones </a></li>  
         <li> <a href="{% url 'potion_craft:inventario' %}"> Inventario </a></li>
-        <li> <a href="{% url 'potion_craft:borrar' %}"> Borrar datos </a></li> 
+        <li> <a href="{% url 'potion_craft:character_creator' %}"> Crear Personaje </a></li> 
         
     </ul>
 

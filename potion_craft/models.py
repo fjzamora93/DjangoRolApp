@@ -3,6 +3,8 @@ from django.db import models
 
 class Personaje(models.Model):
     nombre = models.CharField(max_length = 25)
+    clase = models.CharField(max_length = 25, null=True, blank=True)
+    portrait = models.CharField(max_length = 150, null=True, blank=True)
     def __str__(self):
         return self.nombre
 
@@ -46,6 +48,8 @@ class PersonajeEsencias(models.Model):
     personaje = models.ForeignKey(Personaje, on_delete=models.CASCADE)
     esencia = models.ForeignKey(Esencia, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
+    
+
 
     def __str__(self):
         return f"{self.personaje.nombre} tiene {self.cantidad} unidades de {self.esencia.nombre}"
