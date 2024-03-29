@@ -1,0 +1,19 @@
+{% extends "potion_craft/layout.html" %}
+{% load static %}
+{% block body %}
+
+<h2>Inventario</h2>
+
+<h1>Detalle del perfil de usuario</h1>
+    <p>Nombre de usuario: {{ object.user.username }}</p>
+    <p>Nombre: {{ object.nombre }}</p>
+    <h2>Personajes:</h2>
+    <ul>
+        {% for personaje in personajes %}
+            <li>{{ personaje.nombre }}</li>
+        {% empty %}
+            <li>No hay personajes asociados.</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

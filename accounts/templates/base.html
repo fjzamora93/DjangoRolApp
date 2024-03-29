@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="{% static 'potion_craft/img/favicon.png' %}" type="img/favicon">
+    <link rel="stylesheet" href="{% static 'potion_craft/style.css' %}">
+    <link href="{% static 'potion_craft/style-potion.css' %}" rel="stylesheet">
+
+
+
+</head>
+
+<header>
+         
+    <ul class="menu">
+        <li> <a href="{% url 'potion_craft:index' %}"> Home </a></li>
+        <li> <a href="{% url 'potion_craft:craft' %}"> Ingredientes </a></li>
+        <li> <a href="{% url 'potion_craft:potion' %}"> Pociones </a></li>  
+        <li> <a href="{% url 'potion_craft:inventario' %}"> Inventario </a></li>
+        <li> <a href="{% url 'potion_craft:borrar' %}"> Borrar datos </a></li> 
+        
+    </ul>
+
+</header>
+
+<!--- Lo que estamos haciendo con esto es decir que lo que viene a continuación 
+    es lo que va a cambiar --->
+<body>
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,76 @@
+
+
+#about{
+    display:inline-block;
+    font-family: arial;
+    background-color: rgb(245, 240, 240);
+    text-align:left;
+    margin:20px;
+}
+
+body{
+    text-align:center;
+    background-color: beige;
+}
+
+.cabecera{
+    display:inline-block;
+}
+
+.dibujo{
+    width: 400px;
+    height: auto;
+    vertical-align:top;
+}
+
+header{
+    margin-top:2em;
+    background-color: none;
+}
+
+.hello{
+    background-image: url('img/hello.svg');
+    background-size: 100% 100%;
+    background-attachment: local;
+    background-position: top left;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+
+
+
+
+.presentacion{
+    display: inline-block;
+    text-align: right;
+    /*Normalmente pondría el alineamiento vertical en middle,
+    pero no funciona bien. En top tampoco queda mal. Lo dejo en 100px o 5em*/
+    vertical-align: 5em;
+    margin: 40px;
+    max-width: 400px;
+    
+    
+}
+
+
+.rrss li, .rrss img{
+    display:inline-block;
+    width: 20px;
+    height: auto;
+}
+
+img:hover{
+    opacity: 0.8;
+}
+
+h3{
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 0.2;
+}
+
+
+

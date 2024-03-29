@@ -1,0 +1,70 @@
+{% extends "potion_craft/layout.html" %}
+{% load static %}
+{% block body %}
+
+<!-- HTML del formulario: En tu plantilla HTML, estás utilizando un formulario estándar 
+    de HTML (<form method="post">). 
+    Asegúrate de que el atributo name de los campos del formulario coincida
+    con los nombres de los campos en tu modelo (nombre, clase, portrait).
+         
+    Si los nombres de los campos en el formulario no coinciden con los nombres
+     de los campos en tu modelo, Django no podrá asignar los datos correctamente.
+Además, dado que estás utilizando {{ form.as_p }} para renderizar los campos del formulario,
+ Django manejará automáticamente la generación de los campos y sus atributos name correctamente. Sin embargo, es importante asegurarse de que el HTML generado sea correcto inspeccionando el código fuente de la página renderizada.
+    
+Si los nombres de los campos en el formulario HTML no coinciden
+ con los nombres de los campos en tu modelo, podrías corregirlo usando los nombres de los campos del formulario que Django genera automáticamente. En lugar de definir manualmente los campos del formulario en tu plantilla, podrías usar {{ form.nombre }}, {{ form.clase }}, {{ form.portrait }} para renderizar cada campo individualmente. Esto garantizará que los nombres de los campos coincidan correctamente.
+    
+Si después de revisar estos aspectos todavía tienes problemas para guardar 
+los datos en la base de datos, 
+sería útil agregar impresiones de depuración en tu vista para verificar 
+los datos que se están recibiendo en la petición POST. 
+
+También puedes inspeccionar los mensajes de error que obtienes al validar 
+el formulario para obtener más información sobre lo que podría estar causando el problema. -->
+
+
+
+
+
+<h2>Crea tu personaje </h2>
+<form method="post">
+    {% csrf_token %}
+    
+    <label for="{{ id_nombre }}">Nombre: </label>
+        <br>{{ form.nombre }} <br>
+
+    <label for="{{ id_clase }}">Clase: </label>
+        <br>{{ form.clase }} <br>
+
+    <label for="{{ id_portrait }}"> Portrait: </label>
+        <br>{{ form.portrait }} <br>
+
+    <div>
+        {% for imagen, descripcion in form.portrait.field.choices %}
+            <figure style="display: inline-block; margin:0px; ">
+                <img src="{% static imagen %}" alt="{{ imagen }}" width="100px">
+                <figcaption> {{ descripcion }} </figcaption>
+            </figure>
+        {% endfor %} 
+    </div>
+   
+    <br><br><button type="submit">Guardar</button>
+
+    {% if form.errors %}
+        <div class="errors">
+            <ul>
+                {% for field_errors in form.errors.values %}
+                    {% for error in field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul> 
+        </div>
+    {% endif %}
+
+</form>
+
+
+
+{% endblock %}
