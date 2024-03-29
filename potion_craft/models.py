@@ -1,12 +1,16 @@
 from django.db import models
+from accounts.models import UserProfile
 
 
 class Personaje(models.Model):
     nombre = models.CharField(max_length = 25, unique=True)
     clase = models.CharField(max_length = 25, null=True, blank=True)
     portrait = models.CharField(max_length = 150, null=True, blank=True)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
+                                     related_name='personajes', null=True, blank=True)
+    
     def __str__(self):
-        return self.nombre
+        return f"Nombre: {self.nombre}, Clase: {self.nombre}, URL: {self.nombre}, Usuario: {self.user_profile}"
 
 
 class Esencia(models.Model):

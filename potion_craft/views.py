@@ -4,11 +4,24 @@ from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .forms import *
+from .models import *
 from potion_craft.utils import procesar_datos as proc
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.views.generic.detail import DetailView
 from accounts.models import UserProfile
+from django.contrib.auth.decorators import login_required
+
+# class UserProfileDetailView(DetailView):
+#     model = UserProfile
+#     template_name = 'perfil.html' 
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         user_profile = self.get_object()
+#         context['personajes'] = user_profile.personajes.all()
+#         return context
 
 
 class SignUpView(CreateView):
@@ -23,12 +36,26 @@ def index(request):
         print("INTENTO CON ÉXITO: ", user_profile.nombre )
     except UserProfile.DoesNotExist:
         user_profile = None
-    if "potion" not in request.session:
-        request.session["potion"] = []
+
     return render(request, "potion_craft/index.html", {
-        "potion_form": request.session["potion"],
-        "user_profile": user_profile
+        "user_profile": user_profile,
+       
         })
+
+#AHORA MISMO FUNCIONA DE TAL FORMA QUE SOLAMENTE COGE UN PERSONAJE PARA CADA JUGADOR
+@login_required
+def inventario(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    personaje = Personaje.objects.get(user_profile = user_profile)
+    listado_personajes = Personaje.objects.filter(user_profile = user_profile) if request.user.is_authenticated else []
+
+    return render(request, "potion_craft/inventario.html", {
+        "perfiles" : UserProfile.objects.all(),
+        "personaje" : personaje,
+        "listado_personajes" : listado_personajes,
+     })
+
+
 
 def character_creator(request):
     form = CharacterForm()
@@ -40,8 +67,7 @@ def character_creator(request):
             return HttpResponseRedirect(reverse("potion_craft:inventario"))
         else:
             print(form.errors)
-            
-
+ 
     return render(request, "potion_craft/character_creator.html",{
         "form": form
     })
@@ -73,14 +99,8 @@ def ingredient_craft(request):
     
 })
 
-def inventario(request):
-     return render(request, "potion_craft/inventario.html", {
-          
-     })
-
 
 def potion_craft(request):
-   
     if "ingredientes" not in request.session:
         request.session["ingredientes"] = []
     if "potion" not in request.session:

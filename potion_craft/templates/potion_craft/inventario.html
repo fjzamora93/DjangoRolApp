@@ -4,11 +4,33 @@
 
 <h2>Inventario</h2>
 
+<!--- ESTE FORMULARIO NO FUNCIONA, PARA QUE FUNCIONE HAY QUE APRENDER JAVASCRIPT -->
+<h3>Listado de Perfiles de Usuario</h3>
+<ul>
+    <form method = GET>
+        <select>
+            {% for personaje in listado_personajes %}
+                <option> {{ personaje.nombre }} </option>
+            {% empty %}
+                <option>No hay personajes asociados.</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Seleccionar personaje">
+    </form>
+    
+</ul>
+
+
 <div class="grid-inventario">
-    <div class="grid-item-1">
-        Espacio por definir 
+    <div class="grid-item-1" style="text-align: top;">
+        
+        {{ personaje.nombre }}
+        {{ personaje.clase }}
+        {{ personaje.user_profile }}
+        
     </div>
     <div class="grid-item-2">
+        <img src="{% static personaje.portrait %}" width=100px>
         Hueco para esencias: {{ esencia }}
     </div>
     <div class="grid-item-3">
