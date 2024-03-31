@@ -33,12 +33,22 @@ class SignUpView(CreateView):
 def index(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
-        print("INTENTO CON ÉXITO: ", user_profile.nombre )
+        listado_personajes = Personaje.objects.filter(user_profile = user_profile)
+        print("INTENTO CON ÉXITO: ", listado_personajes )
     except UserProfile.DoesNotExist:
         user_profile = None
+    
+    if request.method == "GET":
+        personaje_seleccionado = request.GET.get('personaje', '')
+        request.session['personaje'] = personaje_seleccionado
+        print("Request Session (cogemos la ID del personaje): ", personaje_seleccionado)
+
+
 
     return render(request, "potion_craft/index.html", {
         "user_profile": user_profile,
+        "listado_personajes" : listado_personajes,
+        "personaje_seleccionado" : personaje_seleccionado
        
         })
 
@@ -46,7 +56,13 @@ def index(request):
 @login_required
 def inventario(request):
     user_profile = UserProfile.objects.get(user=request.user)
-    personaje = Personaje.objects.get(user_profile = user_profile)
+    if request.session['personaje']:
+        personaje_seleccionado = request.session['personaje']
+        personaje = Personaje.objects.get(id = personaje_seleccionado)
+    else:
+        
+        personaje = Personaje.objects.get(user_profile = user_profile)
+    
     listado_personajes = Personaje.objects.filter(user_profile = user_profile) if request.user.is_authenticated else []
 
     return render(request, "potion_craft/inventario.html", {

@@ -17,15 +17,22 @@
     </span>
 
    
-
+    <form mehtod="GET" id="myForm">
+        <select name="personaje">
+            <label for="personaje"> Personaje:</label><br>
+            {% for personaje in listado_personajes %}
+                <option value="{{ personaje.id }}">  Ejemplo: {{ personaje.nombre }} </option>
+            {% empty %}
+                <p>No tienes personajes creados actualmente</p>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit" >
+    </form>
 
 
   
-    <div clas="cabecera">
-        
+  
+ 
     
-        
-       
-
 
 {% endblock %}
