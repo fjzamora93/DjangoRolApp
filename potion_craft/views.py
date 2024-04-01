@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import datetime, random
 from django import forms
 from django.http import HttpResponse, HttpResponseRedirect
@@ -42,8 +42,7 @@ def index(request):
         personaje_seleccionado = request.GET.get('personaje', '')
         request.session['personaje'] = personaje_seleccionado
         print("Request Session (cogemos la ID del personaje): ", personaje_seleccionado)
-
-
+       
 
     return render(request, "potion_craft/index.html", {
         "user_profile": user_profile,
@@ -54,23 +53,36 @@ def index(request):
 
 #AHORA MISMO FUNCIONA DE TAL FORMA QUE SOLAMENTE COGE UN PERSONAJE PARA CADA JUGADOR
 @login_required
-def inventario(request):
+def inventario(request, personaje_id = 2):
+    personaje = Personaje.objects.get(id = personaje_id)
     user_profile = UserProfile.objects.get(user=request.user)
     if request.session['personaje']:
         personaje_seleccionado = request.session['personaje']
-        personaje = Personaje.objects.get(id = personaje_seleccionado)
+        personaje = Personaje.objects.get(id = personaje.id)
     else:
-        
-        personaje = Personaje.objects.get(user_profile = user_profile)
+        personaje = Personaje.objects.get(id = personaje.id)
     
+    if request.method == "GET":
+        personaje_seleccionado = request.GET.get('personaje', '')
+        request.session['personaje'] = personaje_seleccionado
+        print("Request Session (cogemos la ID en el INVENTARIO): ", personaje_seleccionado)
+      
     listado_personajes = Personaje.objects.filter(user_profile = user_profile) if request.user.is_authenticated else []
-
     return render(request, "potion_craft/inventario.html", {
         "perfiles" : UserProfile.objects.all(),
         "personaje" : personaje,
         "listado_personajes" : listado_personajes,
+        "usuario" : user_profile,
      })
 
+
+def inventario_detail(request, personaje_id):
+    personaje = Personaje.objects.get(id = personaje_id)
+    request.session['personaje'] = personaje_id
+    print("Request Session (cogemos la ID en el INVENTARIO): ", personaje)
+    return render(request, "potion_craft/inventario_detail.html",{
+        "personaje" : personaje,
+    })
 
 
 def character_creator(request):
@@ -79,8 +91,12 @@ def character_creator(request):
         form = CharacterForm(request.POST)
         if form.is_valid():
             print("FORMULARIO DE CREACIÓN DE PERSONAJE VALIDADO!!")
-            form.save()
-            return HttpResponseRedirect(reverse("potion_craft:inventario"))
+            personaje = form.save(commit=False)
+            user_profile = UserProfile.objects.get(user=request.user)
+
+            personaje.user_profile = user_profile
+            personaje.save()
+            return redirect("potion_craft:inventario")
         else:
             print(form.errors)
  
@@ -170,37 +186,3 @@ def borrar_datos_sesion(request):
 
 
 
-
-"""
-def lista(request):
-    if "tasks" not in request.session:
-        request.session["tasks"] = []
-
-    return render(request, "hello/lista.html", {
-        "tasks" : request.session["tasks"],
-        "tareas": tareas,
-        }
-    )
-
-"""
-
-
-"""
-if request.method == "POST":
-        form = NewTaskForm(request.POST)
-        if form.is_valid():
-            task = form.cleaned_data["task"]
-            tareas.append(task)
-            request.session["tasks"] += [task]
-            return HttpResponseRedirect(reverse("primer_proyecto:lista"))
-        
-        else:
-            return render(request, "hello/añadir.html", {
-                "form":form
-            })
-    
-    return render(request, "hello/añadir.html", {
-        "form" : NewTaskForm() 
-    })
-
-"""

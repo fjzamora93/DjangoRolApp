@@ -16,21 +16,17 @@
         <br><span>Nombre del perfil: {{ user_profile.nombre }}</span>
     </span>
 
-   
-    <form mehtod="GET" id="myForm">
-        <select name="personaje">
-            <label for="personaje"> Personaje:</label><br>
-            {% for personaje in listado_personajes %}
-                <option value="{{ personaje.id }}">  Ejemplo: {{ personaje.nombre }} </option>
-            {% empty %}
-                <p>No tienes personajes creados actualmente</p>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Submit" >
-    </form>
+
+    {% for personaje in listado_personajes %}
+        <li> Personaje {{ personaje.nombre }}</li>
+        <a href="{% url 'potion_craft:inventario_detail' personaje.id %}"> Página del personaje </a>
+        
+    {% empty %}
+        <p>Nada</p>
+    {% endfor %}
 
 
-  
+
   
  
     

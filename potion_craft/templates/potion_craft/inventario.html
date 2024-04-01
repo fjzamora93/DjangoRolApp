@@ -2,23 +2,16 @@
 {% load static %}
 {% block body %}
 
-<h2>Inventario</h2>
 
-<!--- ESTE FORMULARIO NO FUNCIONA, PARA QUE FUNCIONE HAY QUE APRENDER JAVASCRIPT -->
-<h3>Listado de Perfiles de Usuario</h3>
-<ul>
-    <form method = GET>
-        <select>
-            {% for personaje in listado_personajes %}
-                <option> {{ personaje.nombre }} </option>
-            {% empty %}
-                <option>No hay personajes asociados.</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Seleccionar personaje">
-    </form>
-</ul>
+<h3>Inventario de Personajes de {{ usuario.nombre }}</h3>
+{% for personaje in listado_personajes %}
+    <li> {{ personaje.nombre }} ->
+        <a href="{% url 'potion_craft:inventario_detail' personaje.id %}"> Inventario de personaje </a>
+    </li>
+{% endfor %}
 
+
+<h3>Personaje: {{ personaje.nombre }} {{ personaje.id }}</h3>
 
 <div class="grid-inventario">
     <div class="grid-item-1" style="text-align: top;">
@@ -42,3 +35,4 @@
 
 
 {% endblock %}
+

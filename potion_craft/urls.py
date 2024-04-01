@@ -18,7 +18,8 @@ urlpatterns = [
     path("craft/", views.ingredient_craft, name="craft"),
     path("potion/", views.potion_craft, name="potion"),
     path('inventario/', views.inventario, name='inventario'),
-    path("<int:personaje_id>", views.inventario, name="personaje_detail"),
+    path("inventario/<int:personaje_id>", views.inventario_detail, name="inventario_detail"),
+
     path('character_creator/', views.character_creator, name='character_creator'),
     path('borrar/', views.borrar_datos_sesion, name='borrar'),
     path('admin/', admin.site.urls),

@@ -41,6 +41,7 @@ class CharacterForm(forms.ModelForm):
                                  widget=forms.Select(attrs={'class': 'form-control'}))
     portrait = forms.ChoiceField(choices=IMAGENES, label='Foto', widget=forms.Select(attrs={'class': 'form-control'}))
    
+
     class Meta:
         model = Personaje
         fields = ['nombre', 'clase', 'portrait']
