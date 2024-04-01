@@ -5,7 +5,13 @@
     src: url('fonts/UncialAntiqua-Regular.ttf');
 }
 
-
+.cifra{
+    margin-right: 20px;
+    background-color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px, solid, black;
+}
 
 h2 { font-family: "Antiqua", serif;
     font-size: 2em; 
@@ -16,6 +22,7 @@ h2 { font-family: "Antiqua", serif;
 li, .listado {
     font-family: Papyrus, fantasy;
     font-size: 20px;
+    list-style-type: none;
 }
 
 .fuente-antigua{
@@ -38,34 +45,23 @@ body{
 
 
 .grid-inventario{
+    display: grid;
     margin: auto;
     max-width: 70%;
-    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
     grid-template-columns : auto auto auto; /*Tres columnas de ancho automático*/
     grid-template-rows: 100px 200px; 
     grid-gap: 10px;
 }
 
 .grid-inventario div{
+    align-self: start; /* Ajusta la altura del elemento al contenido */
     padding: 10px;
     border: 3px;
     border-color: brown;
     border-style: outset;
-}
-
-.grid-item-1{
-    grid-column: 1/3;
-    grid-row: 1;
-}
-
-.grid-item-2{
-    grid-column: 2;
-    grid-row: 2;
-}
-
-.grid-item-3{
-    grid-column:3;
-    grid-row: 1/3;
+    background-color: bisque;
+   
 }
 
 

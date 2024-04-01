@@ -10,6 +10,7 @@
 
 <h3>Personaje: {{ personaje.nombre }} {{ personaje.id }}</h3>
 
+<img src="{% static personaje.portrait %}" width=100px>
 
 <div class="grid-inventario">
     <div class="grid-item-1" style="text-align: top;">
@@ -21,14 +22,43 @@
     </div>
     
     <div class="grid-item-2">
-        <img src="{% static personaje.portrait %}" width=100px>
-        Hueco para esencias: {{ esencia }}
+        
+        <h3>Esencias</h3>
+        {% for item in listado_esencias %}
+            <li> <span class="cifra"> {{ item.cantidad }} </span>
+                {{ item.esencia.nombre }}   
+            </li>
+        {% empty %}
+            <p>Actualmente no hay</p>
+
+        {% endfor %}
+
     </div>
     <div class="grid-item-3">
-        Hueco para pociones: {{ pocion }}
+        <h3>Pociones</h3>
+        {% for item in listado_pociones %}
+            <li> <span class="cifra"> {{ item.cantidad }} </span>
+                {{ item.potion.nombre }}   
+            </li>
+        {% empty %}
+            <p>Actualmente no hay</p>
+
+        {% endfor %}
+
+
     </div>
     <div>
-        Hueco para ingredientes : {{ ingrediente }}
+        <h3>Ingredientes</h3>
+        {% for item in listado_ingredientes %}
+            <li> <span class="cifra"> {{ item.cantidad }} </span>
+                {{ item.ingrediente.nombre }}   
+            </li>
+        {% empty %}
+            <p>Actualmente no hay</p>
+
+        {% endfor %}
+
+
     </div>
 </div>
 

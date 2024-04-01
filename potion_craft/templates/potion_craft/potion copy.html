@@ -5,15 +5,13 @@
 
 
 </form>
-    
-
-    <h3>Inventario disponible de {{ personaje.nombre }}</h3>
-    <img src="{% static personaje.portrait %}" width=100px>
+  
+    <h3>Esta segunda lista usa el request.session</h3>
 
     <ul style=" list-style-type: none;">
-        {% for item in inventario.detalles_pociones %}
+        {% for esencia in ingredientes %}
             <li class="listado">
-                <b>Pociones :</b> {{ item.nombre }} {{ item.cantidad }}
+                <b>Esencias obtenidas:</b> {{ esencia }}
             </li>
         {% empty %}
         <li>No hay esencias en este momento</li>

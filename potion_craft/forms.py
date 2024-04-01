@@ -1,7 +1,7 @@
 # en forms.py
 from django import forms
 import random
-from .models import Personaje
+from .models import *
 
 
 class ReadOnlyIntegerField(forms.IntegerField):
@@ -113,13 +113,19 @@ class PotionForm(forms.Form):
     dado = forms.IntegerField(min_value = 0, initial=11)
    
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, personaje=None, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['esencias'].choices = self.get_sencias_choices(personaje)
       
         for field in self.fields.values():
             field.error_messages['required'] = 'Acuérdate de elegir!'
-
-
+    
+    def get_sencias_choices(self, personaje):
+        
+        esencias_personaje = PersonajeEsencias.objects.filter(personaje=personaje)
+        esencias_choices = [(str(esencia.esencia.id), esencia.esencia.nombre) for esencia in esencias_personaje]
+        return esencias_choices
+      
 
 
 

@@ -6,6 +6,7 @@ from django.urls import reverse
 from .forms import *
 from .models import *
 from potion_craft.utils import procesar_datos as proc
+from potion_craft.utils import ObtencionDatos as obt
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -34,7 +35,7 @@ def index(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
         listado_personajes = Personaje.objects.filter(user_profile = user_profile)
-        print("INTENTO CON ÉXITO: ", listado_personajes )
+       
     except UserProfile.DoesNotExist:
         user_profile = None
     
@@ -78,10 +79,20 @@ def inventario(request, personaje_id = 2):
 
 def inventario_detail(request, personaje_id):
     personaje = Personaje.objects.get(id = personaje_id)
-    request.session['personaje'] = personaje_id
-    print("Request Session (cogemos la ID en el INVENTARIO): ", personaje)
+    request.session['personaje'] = personaje.id
+
+    listado_esencias = PersonajeEsencias.objects.filter(personaje = personaje_id)
+    listado_ingredientes = PersonajeIngredientes.objects.filter(personaje = personaje_id)
+    listado_pociones = PersonajePotion.objects.filter(personaje = personaje_id)
+    print("PRINT INVENTARIO ", personaje.id, listado_pociones)
+
+
+
     return render(request, "potion_craft/inventario_detail.html",{
         "personaje" : personaje,
+        "listado_ingredientes" : listado_ingredientes,
+        "listado_esencias" : listado_esencias,
+        "listado_pociones" : listado_pociones,
     })
 
 
@@ -133,48 +144,19 @@ def ingredient_craft(request):
 
 
 def potion_craft(request):
-    if "ingredientes" not in request.session:
-        request.session["ingredientes"] = []
-    if "potion" not in request.session:
-                request.session["potion"] = []
+    personaje_actual = request.session['personaje']
+    personaje_actual = Personaje.objects.get(id = personaje_actual)
+    form_potion = PotionForm(initial={'dado': 11}, personaje= personaje_actual)
 
+    inventario = obt.Inventario(personaje_actual)
+    print("Personaje actual: ", inventario.listado_pociones)
     
-    if request.method == "POST":
-        print("CONDICIÓN 1")
-        form_potion = PotionForm(request.POST)
-        
-        if form_potion.is_valid():
-            print("FORMULARIO VÁLIDO")
-            dado = form_potion.cleaned_data['dado']
-            base = form_potion.cleaned_data['base']
-            alter = form_potion.cleaned_data['alter']
-            conocimiento = form_potion.cleaned_data['conocimiento']
-            util = form_potion.cleaned_data['util']
-            esencias = form_potion.cleaned_data['esencias']
-
-            resultado_pocion = proc.procesar_datos_pocion(base, alter, conocimiento, util, dado, esencias)
-            
-            request.session["potion"] += [resultado_pocion]
-            print(resultado_pocion)
-            return HttpResponseRedirect(reverse("potion_craft:index"))
-            
-        else:
-            print(form_potion.errors)
-            
-            return render(request, "potion_craft/potion.html", {
-                    "form_potion": PotionForm(request.POST),
-                })
     
-    else:
-        form_potion = PotionForm(initial={'dado': 11})
-
-
     return render(request, "potion_craft/potion.html", {
-        "ingredientes": request.session["ingredientes"],
-        "form_potion": form_potion,
-        
+        "inventario" : inventario,
+        "personaje" : personaje_actual,
+        "form_potion" : form_potion
     })
-
 
 
 
@@ -186,3 +168,43 @@ def borrar_datos_sesion(request):
 
 
 
+
+# def potion_craft(request):
+#     if "ingredientes" not in request.session:
+#         request.session["ingredientes"] = []
+#     if "potion" not in request.session:
+#         request.session["potion"] = []
+
+    
+#     if request.method == "POST":
+#         form_potion = PotionForm(request.POST)
+#         if form_potion.is_valid():
+#             print("FORMULARIO VÁLIDO")
+#             dado = form_potion.cleaned_data['dado']
+#             base = form_potion.cleaned_data['base']
+#             alter = form_potion.cleaned_data['alter']
+#             conocimiento = form_potion.cleaned_data['conocimiento']
+#             util = form_potion.cleaned_data['util']
+#             esencias = form_potion.cleaned_data['esencias']
+
+#             resultado_pocion = proc.procesar_datos_pocion(base, alter, conocimiento, util, dado, esencias)
+            
+#             request.session["potion"] += [resultado_pocion]
+#             print(resultado_pocion)
+#             return HttpResponseRedirect(reverse("potion_craft:index"))
+            
+#         else:
+#             print(form_potion.errors)
+            
+#             return render(request, "potion_craft/potion.html", {
+#                     "form_potion": PotionForm(request.POST),
+#                 })
+    
+#     else:
+#         form_potion = PotionForm(initial={'dado': 11})
+
+
+#     return render(request, "potion_craft/potion.html", {
+#         "ingredientes": request.session["ingredientes"],
+#         "form_potion": form_potion,
+#     })
