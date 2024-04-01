@@ -1,0 +1,36 @@
+{% extends "potion_craft/layout.html" %}
+{% load static %}
+{% block body %}
+
+<h2>Inventario</h2>
+
+<!--- ESTE FORMULARIO NO FUNCIONA, PARA QUE FUNCIONE HAY QUE APRENDER JAVASCRIPT -->
+<h3>Listado de Perfiles de {{ usuario.nombre }}</h3>
+
+
+<h3>Personaje: {{ personaje.nombre }} {{ personaje.id }}</h3>
+
+
+<div class="grid-inventario">
+    <div class="grid-item-1" style="text-align: top;">
+        
+        {{ personaje.nombre }}
+        {{ personaje.clase }}
+        {{ personaje.user_profile }}
+        
+    </div>
+    
+    <div class="grid-item-2">
+        <img src="{% static personaje.portrait %}" width=100px>
+        Hueco para esencias: {{ esencia }}
+    </div>
+    <div class="grid-item-3">
+        Hueco para pociones: {{ pocion }}
+    </div>
+    <div>
+        Hueco para ingredientes : {{ ingrediente }}
+    </div>
+</div>
+
+
+{% endblock %}
