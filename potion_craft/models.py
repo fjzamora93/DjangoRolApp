@@ -16,6 +16,7 @@ class Personaje(models.Model):
 class Esencia(models.Model):
     nombre = models.CharField(max_length=25, default='Esencia')
     tipo = models.CharField(max_length = 25, help_text='aire / agua / fuego / tierra') #elemento
+    valor = models.CharField(max_length=25, default='1')
     def __str__(self):
         return f"{self.nombre}, del tipo: {self.tipo} "
     
@@ -53,8 +54,6 @@ class PersonajeEsencias(models.Model):
     esencia = models.ForeignKey(Esencia, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
     
-
-
     def __str__(self):
         return f"{self.personaje.nombre} tiene {self.cantidad} unidades de {self.esencia.nombre}"
     

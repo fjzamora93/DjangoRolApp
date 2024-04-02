@@ -150,7 +150,32 @@ def potion_craft(request):
 
     inventario = obt.Inventario(personaje_actual)
     print("Personaje actual: ", inventario.listado_pociones)
-    
+
+    if request.method == "POST":
+        form_potion = PotionForm(request.POST, personaje=personaje_actual)
+
+        if form_potion.is_valid():
+            print("FORMULARIO VÁLIDO")
+            dado = form_potion.cleaned_data['dado']
+            base = form_potion.cleaned_data['base']
+            alter = form_potion.cleaned_data['alter']
+            conocimiento = form_potion.cleaned_data['conocimiento']
+            util = form_potion.cleaned_data['util']
+            esencias = form_potion.cleaned_data['esencias']
+
+            pocion_añadida = proc.procesar_datos_pocion(base, alter, conocimiento, 
+                                                          util, dado, esencias, personaje_actual)
+            
+            if pocion_añadida != "¡Fallo!":
+                request.session["potion"] = pocion_añadida.potion.nombre
+            else:
+                request.session["potion"] = None
+
+            return redirect("potion_craft:inventario_detail", personaje_id=personaje_actual.id)
+            
+        else:
+            form_potion = PotionForm(initial={'dado': 11}, personaje=personaje_actual)
+            
     
     return render(request, "potion_craft/potion.html", {
         "inventario" : inventario,

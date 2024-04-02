@@ -1,4 +1,5 @@
 import random
+from ..models import *
 
 """
 Esta función puede devolver dos cosas:
@@ -44,7 +45,7 @@ def procesar_datos_ingredientes(ingr, color, proceso, herramienta):
 
 
 
-def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias = list, ):
+def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias, personaje_actual)->PersonajePotion:
     
     base = int(base)
     conocimiento = int(conocimiento)
@@ -66,13 +67,13 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias =
                     efecto = "Inspiración"
 
             case "2":
-                efecto = "Curación"
+                efecto = "Curativa"
                 if alteracion == 1:
                     efecto = "Veneno"
                 if alteracion == 2:
                     efecto = "Calma"
             case "3":
-                efecto = "Resistencia"
+                efecto = "Piel de Piedra"
                 if alteracion == 1:
                     efecto = "Petrificación"
                 if alteracion == 2:
@@ -89,7 +90,7 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias =
         match esencias[1]:
             case "2":
                 if esencias[0] == 1:
-                    efecto = "Suerte"
+                    efecto = "Suerte Líquida"
                     if alteracion == 1:
                         efecto = "Aturdimiento"
                     if alteracion == 2:
@@ -97,7 +98,7 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias =
 
             case "3":
                 if esencias[0] == 2:
-                    efecto = "Vida Falsa"
+                    efecto = "Falsa Vida"
                     if alteracion == 1:
                         efecto = "Congelación"
                     if alteracion == 2:
@@ -112,10 +113,35 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias =
                         efecto = "Alcohol"
 
                 if esencias[0] == 3:
-                    efecto = "Destreza"
+                    efecto = "Agilidad"
                     if alteracion == 1:
                         efecto = "Ceguera"
                     if alteracion == 2:
                         efecto = "Euforia"
     
-    return efecto
+    pocion_añadida = actualizar_bbdd(personaje_actual, efecto)
+
+    return pocion_añadida
+
+
+def actualizar_bbdd(personaje_actual, efecto):
+    nueva_pocion = Potion.objects.get(nombre = efecto)
+    if not PersonajePotion.objects.filter(personaje = personaje_actual, potion = nueva_pocion).exists():
+        pocion_añadida = PersonajePotion.objects.create(
+            personaje = personaje_actual,
+            potion = nueva_pocion,
+            cantidad = 1)
+  
+    else:
+        pocion_añadida = PersonajePotion.objects.get(personaje = personaje_actual, potion = nueva_pocion)
+        pocion_añadida.cantidad += 1
+        pocion_añadida.save()
+    
+    # personaje = PersonajeEsencias.objects.get(id = personaje_actual, esencias = esencia_gastada)
+    # print(personaje)
+    # personaje.cantidad -= 1
+
+
+    return pocion_añadida
+    
+    
