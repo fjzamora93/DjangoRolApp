@@ -3,7 +3,7 @@ from ..models import *
 
 """
 Esta función puede devolver dos cosas:
-En caso de error, devuelve ¡Fallo!
+En caso de error, devuelve None
 En caso de acierto, devuelve una tupla.
 Creo que sería mejor que esta función simplemente actualizase la base de datos
 para que en vez de devolver dos cosas, siempre devuelva la misma.
@@ -12,7 +12,7 @@ para que en vez de devolver dos cosas, siempre devuelva la misma.
 def procesar_datos_ingredientes(ingr, color, proceso, herramienta):
     herramienta = int(herramienta)
     if proceso not in color:
-        return "¡Fallo!"
+        return None
     
     match herramienta:
         case 0:
@@ -41,11 +41,11 @@ def procesar_datos_ingredientes(ingr, color, proceso, herramienta):
 
     #TODO incorporar cantidad a la base de datos
     cantidad = cantidad
-    return "¡Fallo!" if cantidad == 0  else esencia
+    return None if cantidad == 0  else esencia
 
 
 
-def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias, personaje_actual)->PersonajePotion:
+def procesar_datos_pocion(base, alteracion, conocimiento, util, dado=int, esencias=list, personaje_actual=Personaje)->PersonajePotion:
     
     base = int(base)
     conocimiento = int(conocimiento)
@@ -53,7 +53,7 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias, 
     dado = int(dado)
     sum = dado + util + conocimiento + base
     if sum <= 11:
-        return ("¡Tirada fallida!", "dado:", dado, "suma: ", sum, dado, util, conocimiento, base)
+        return None
     
     efecto = 'Ingredientes no válidos!'
     if len(esencias) == 1:
@@ -119,12 +119,12 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado, esencias, 
                     if alteracion == 2:
                         efecto = "Euforia"
     
-    pocion_añadida = actualizar_bbdd(personaje_actual, efecto)
+    pocion_añadida = actualizar_bbdd(personaje_actual, efecto, esencias)
 
     return pocion_añadida
 
 
-def actualizar_bbdd(personaje_actual, efecto):
+def actualizar_bbdd(personaje_actual = Personaje, efecto = str, valor_esencias_gastadas = list)->PersonajePotion:
     nueva_pocion = Potion.objects.get(nombre = efecto)
     if not PersonajePotion.objects.filter(personaje = personaje_actual, potion = nueva_pocion).exists():
         pocion_añadida = PersonajePotion.objects.create(
@@ -137,9 +137,13 @@ def actualizar_bbdd(personaje_actual, efecto):
         pocion_añadida.cantidad += 1
         pocion_añadida.save()
     
-    # personaje = PersonajeEsencias.objects.get(id = personaje_actual, esencias = esencia_gastada)
-    # print(personaje)
-    # personaje.cantidad -= 1
+    for esencia in valor_esencias_gastadas:
+        esencia = Esencia.objects.get(valor = esencia)
+
+        personaje = PersonajeEsencias.objects.get(personaje = personaje_actual, esencia = esencia.valor)
+        print("COMPROBACION", personaje, esencia)
+        personaje.cantidad -= 1
+        personaje.save()
 
 
     return pocion_añadida

@@ -35,15 +35,13 @@ def index(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
         listado_personajes = Personaje.objects.filter(user_profile = user_profile)
-       
+        if 'personaje' in request.session:
+            personaje_seleccionado = request.session['personaje']
+        else:
+            request.session['personaje'] = ''
+
     except UserProfile.DoesNotExist:
         user_profile = None
-    
-    if request.method == "GET":
-        personaje_seleccionado = request.GET.get('personaje', '')
-        request.session['personaje'] = personaje_seleccionado
-        print("Request Session (cogemos la ID del personaje): ", personaje_seleccionado)
-       
 
     return render(request, "potion_craft/index.html", {
         "user_profile": user_profile,
@@ -57,16 +55,10 @@ def index(request):
 def inventario(request, personaje_id = 2):
     personaje = Personaje.objects.get(id = personaje_id)
     user_profile = UserProfile.objects.get(user=request.user)
-    if request.session['personaje']:
+    if 'personaje' in request.session:
         personaje_seleccionado = request.session['personaje']
-        personaje = Personaje.objects.get(id = personaje.id)
     else:
-        personaje = Personaje.objects.get(id = personaje.id)
-    
-    if request.method == "GET":
-        personaje_seleccionado = request.GET.get('personaje', '')
-        request.session['personaje'] = personaje_seleccionado
-        print("Request Session (cogemos la ID en el INVENTARIO): ", personaje_seleccionado)
+        request.session['personaje'] = ''
       
     listado_personajes = Personaje.objects.filter(user_profile = user_profile) if request.user.is_authenticated else []
     return render(request, "potion_craft/inventario.html", {
@@ -166,11 +158,8 @@ def potion_craft(request):
             pocion_añadida = proc.procesar_datos_pocion(base, alter, conocimiento, 
                                                           util, dado, esencias, personaje_actual)
             
-            if pocion_añadida != "¡Fallo!":
-                request.session["potion"] = pocion_añadida.potion.nombre
-            else:
-                request.session["potion"] = None
-
+            request.session["potion"] = pocion_añadida.potion.nombre if pocion_añadida != None else  None
+           
             return redirect("potion_craft:inventario_detail", personaje_id=personaje_actual.id)
             
         else:
