@@ -34,21 +34,24 @@ el formulario para obtener más información sobre lo que podría estar causando
     <label for="{{ id_nombre }}">Nombre: </label>
         <br>{{ form.nombre }} <br>
 
-    <label for="{{ id_clase }}">Clase: </label>
-        <br>{{ form.clase }} <br>
+    <label for="id_clase">Clase:</label><br>
+    {{ form.clase }}<br>
 
     <label for="{{ id_portrait }}"> Portrait: </label>
         <br>{{ form.portrait }} <br>
 
+    
     <div>
-        {% for imagen, descripcion in form.portrait.field.choices %}
+        {% for ruta, descripcion in form.portrait.field.choices %}
             <figure style="display: inline-block; margin:0px; ">
-                <img src="{% static imagen %}" alt="{{ imagen }}" width="100px">
+                <img src="{% static ruta %}" alt="{{ ruta }}" width="100px">
                 <figcaption> {{ descripcion }} </figcaption>
             </figure>
         {% endfor %} 
     </div>
-   
+
+
+    <img src="{% static 'potion_craft/img/portraits/explorador/sample.png' %}"  width="200px" id="retrato">
     <br><br><button type="submit">Guardar</button>
 
     {% if form.errors %}

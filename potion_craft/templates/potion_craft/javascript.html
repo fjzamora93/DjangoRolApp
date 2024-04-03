@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'hello/style.css' %}" rel="stylesheet" >
+    <script src="{% static 'js/script.js' %}"></script>
+    <title>Document</title>
+    
+</head>
+
+<body>
+    
+
+   <button onclick="hello()">
+        Haz click aquí!
+   </button>
+
+   <button onclick="count()">
+        Cuenta!
+    </button> <br><br>
+    
+    <div>
+        <form>
+            <input autofocus id="nombre" placeholder="name" type="text">
+            <input type="submit">
+        </form>
+    </div>
+
+
+    <h2>¿Es año nuevo?</h2>
+    <div>
+        {% if newyear %}
+            <h3> Sí </h3>
+        {% else %}
+            <h3> No </h3>
+        {% endif %}
+    </div>
+
+    <header>
+        <!--- Comenzamos creando un menú a partir de una lista-->
+        <ul class="menu">
+            <a href="#about">
+                <li> <a href="{% url 'primer_proyecto:lista' %}"> Mi Lista </a></li>
+                     
+            </a>
+            <a href="#skills"> 
+                <li> <a href="{% url 'primer_proyecto:añadir' %}"> Añadir </a></li> 
+            </a>
+            <li>Competencias</li>
+            <li>Experiencia</li>
+            <li>Formación</li>
+            <li>Contacto</li>
+        </ul>
+    </header>
+
+
+    <div clas="cabecera">
+        
+        
+        <img class ="dibujo" src="{% static 'hello/img/hello.svg' %}">
+       
+
+        <div class="presentacion">
+            <h3> HELLO!</h3>
+            <h2>I’m Javier Zamora</h2>
+            <h3>Aspiring Developer & Web Designer</h3>
+            <ul class="rrss">
+                <a href="https://github.com/fjzamora93" target="_blank">
+                    <li><img src="icon/github.png" alt="rrss"></li>
+                </a>
+                <a href="https://www.linkedin.com/in/fjzamora/" target="_blank">
+                    <li><img src="icon/logotipo-de-linkedin.png" alt="rrss"></li>
+                </a>
+                <a href="https://www.instagram.com/elgatobarista/">
+                    <li><img src="icon/logo-instagram.png" alt="rrss"></li>
+                </a>
+            </ul>
+        </div>
+    </div>
+
+    <div id="about">
+        <h2>About me...</h2>
+        <div class="presentacion"> 
+            Una vez escuché eso de si creía que la Inteligencia Artificial pondría fin a nuestra creatividad. 
+            Puede que sea así, quizás me tiente la idea de averiguarlo.
+             Mientras tanto, sigamos explorando con la inventiva humana.
+        </div>
+        <image class ="dibujo" src="img/avatar.png">
+    </div>
+</body>
+
+<!-- <script> 
+        
+        
+
+    function hello(){
+        //Esta es la forma de declarar variables, let, y constantes const
+        const heading = document.querySelector('h2')
+
+         //Este es el selector de propiedades de JavaScript
+        if (heading.innerHTML === '¡Adiós!'){
+            heading.innerHTML = "¡Hola!"
+        } else {
+            heading.innerHTML = "¡Adiós!"
+        }
+    }
+
+    let counter = 0;
+    function count(){
+        counter ++;
+        alert(counter)
+    }
+
+    /*El EventListener tomará dos parámetros, primero el evento en sí mismo (cargar la página), 
+    el segundo es la función que se ejecutará en el evento, que puede definirse justo ahí*/
+    document.addEventListener('DOMContentLoaded', function(){
+        //Un selector puede referirse a una función
+        document.querySelector('button').onclick = hello;
+    });
+
+</script> -->
+
+
+</html>
