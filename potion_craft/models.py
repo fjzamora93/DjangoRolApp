@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import UserProfile
-
+#hola
 
 class Personaje(models.Model):
     nombre = models.CharField(max_length = 25, unique=True)
