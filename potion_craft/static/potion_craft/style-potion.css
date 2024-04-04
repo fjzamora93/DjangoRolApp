@@ -43,6 +43,27 @@ body{
     background-position:center;
 }
 
+.galeria {
+    display: flex;
+    justify-content: center; /* Alinea horizontalmente los elementos al centro */
+    align-items: center; /* Alinea verticalmente los elementos al centro */
+  }
+
+.galeria> * {
+    text-align: center;
+    justify-content: center;
+    margin:20px;
+   
+}
+
+.galeria-side{
+    width: 150px;
+    height:auto;
+    opacity:50%;
+    
+}
+
+
 
 .grid-inventario{
     display: grid;
