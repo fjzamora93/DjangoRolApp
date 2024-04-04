@@ -23,28 +23,50 @@ class CharacterForm(forms.ModelForm):
         })
 
     CLASES = [
-        ('Guerrero', 'Guerrero'),
-        ('Mago', 'Mago'),
-        ('Explorador', 'Explorador'),
-        ('Clérigo', 'Clérigo'),
-        ('Bardo', 'Bardo'),
+        ('guerrero', 'Guerrero'),
+        ('mago', 'Mago'),
+        ('explorador', 'Explorador'),
+        ('clerigo', 'Clérigo'),
+        ('bardo', 'Bardo'),
     ]
     IMAGENES = [
     ('potion_craft/img/portraits/Eric.png', 'Imagen 1'),
     ('potion_craft/img/portraits/humano-bardo-3.png', 'Imagen 2'),
     ('potion_craft/img/portraits/humano-clerigo-3.png', 'Imagen 3'),
     # Agrega más imágenes aquí según sea necesario
-]
+]   
+    GENERO = [
+        ('masc', 'Masculino'),
+        ('fem', 'Femenino')
+    ]
+
+    RAZA = [
+        ('elfo', 'Elfo'),
+        ('humano', 'Humano')
+    ]
+
+    AVATAR = [
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+    ]
 
     nombre = forms.CharField(label='Nombre')
     clase = forms.ChoiceField(choices=CLASES, label="¿Qué clase eres?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
-    portrait = forms.ChoiceField(choices=IMAGENES, label='Foto', widget=forms.Select(attrs={'class': 'form-control'}))
-   
+    
+    genero = forms.ChoiceField(choices=GENERO, label="¿De qué género es tu personaje?",
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
+    raza = forms.ChoiceField(choices=RAZA, label="Elige tu raza",
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
+    portrait = forms.ChoiceField(choices=AVATAR, label="Elige un avatar",
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Personaje
-        fields = ['nombre', 'clase', 'portrait']
+        fields = ['nombre', 'clase', 'raza', 'genero', 'portrait']
 
 
 class PotionForm(forms.Form):

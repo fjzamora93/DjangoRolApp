@@ -25,7 +25,7 @@ el formulario para obtener más información sobre lo que podría estar causando
 
 
 
-
+<div id="charcreator">
 
 <h2>Crea tu personaje </h2>
 <form method="post">
@@ -35,20 +35,27 @@ el formulario para obtener más información sobre lo que podría estar causando
         <br>{{ form.nombre }} <br>
 
     <label for="id_clase">Clase:</label><br>
-    {{ form.clase }}<br>
+        {{ form.clase }}<br>
 
-    <label for="{{ id_portrait }}"> Portrait: </label>
-        <br>{{ form.portrait }} <br>
+    <label for="id_raza">Raza:</label><br>
+        {{ form.raza }}<br>
+
+    <label for="id_genero">Género:</label>
+        <br>{{ form.genero }}<br>
+
+    <label for="id_portrait">Selecciona tu Avatar:</label>
+        <br>{{ form.portrait }}<br>
+
 
     
-    <div>
+    <!-- <div>
         {% for ruta, descripcion in form.portrait.field.choices %}
             <figure style="display: inline-block; margin:0px; ">
                 <img src="{% static ruta %}" alt="{{ ruta }}" width="100px">
                 <figcaption> {{ descripcion }} </figcaption>
             </figure>
         {% endfor %} 
-    </div>
+    </div> -->
 
 
     <img src="{% static 'potion_craft/img/portraits/explorador/sample.png' %}"  width="200px" id="retrato">
@@ -67,7 +74,7 @@ el formulario para obtener más información sobre lo que podría estar causando
     {% endif %}
 
 </form>
-
+</div>
 
 
 {% endblock %}

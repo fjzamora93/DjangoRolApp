@@ -2,24 +2,34 @@
 
 document.addEventListener('DOMContentLoaded', function(){
     const clase_dd = document.querySelector('#id_clase');
+    const raza_dd = document.querySelector('#id_raza');
+    const genero_dd = document.querySelector('#id_genero');
+    const avatar_dd = document.querySelector('#id_portrait');
     const portrait = document.querySelector('#retrato');
-    
-    // Función para construir la ruta de la imagen en función del valor seleccionado en el dropdown
-    function construirRutaImagen(clase) {
-        return `/static/potion_craft/img/portraits/${clase.toLowerCase()}/sample.png`;
+
+    function construirRutaImagen(clase, raza, genero, avatar) {
+        let ruta = `/static/potion_craft/img/portraits/${raza}/${genero}-${raza}-${clase}-${avatar}.png`
+        console.log(ruta)
+        return ruta;
     }
-    
-    portrait.src = construirRutaImagen(clase_dd.value);
-    portrait.alt = clase_dd.value;
-    
-    // Agregar un evento change al dropdown
-    clase_dd.addEventListener('change', function(){
-       
-        let claseSeleccionada = this.value;
-        let rutaImagen = construirRutaImagen(claseSeleccionada);
+
+    function actualizarImagen() {
+        let claseSeleccionada = clase_dd.value;
+        let razaSeleccionada = raza_dd.value;
+        let generoSeleccionado = genero_dd.value;
+        let avatarSeleccionado = avatar_dd.value;
+
+        let rutaImagen = construirRutaImagen(claseSeleccionada, razaSeleccionada, generoSeleccionado, avatarSeleccionado);
         portrait.src = rutaImagen;
         portrait.alt = claseSeleccionada;
-        console.log(rutaImagen);
+    }
+
+    portrait.src = construirRutaImagen(clase_dd.value, raza_dd.value, genero_dd.value, avatar_dd.value);
+    portrait.alt = clase_dd.value;
+
+    const selectsCharCreator = document.querySelectorAll('#charcreator select');
+    selectsCharCreator.forEach(select => {
+        select.addEventListener('change', actualizarImagen);
     });
 });
 

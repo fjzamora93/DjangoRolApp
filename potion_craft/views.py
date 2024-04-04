@@ -78,8 +78,6 @@ def inventario_detail(request, personaje_id):
     listado_pociones = PersonajePotion.objects.filter(personaje = personaje_id)
     print("PRINT INVENTARIO ", personaje.id, listado_pociones)
 
-
-
     return render(request, "potion_craft/inventario_detail.html",{
         "personaje" : personaje,
         "listado_ingredientes" : listado_ingredientes,
@@ -98,6 +96,7 @@ def character_creator(request):
             user_profile = UserProfile.objects.get(user=request.user)
 
             personaje.user_profile = user_profile
+            personaje.portrait = proc.generador_ruta_portrait(personaje.genero, personaje.raza, personaje.clase, personaje.portrait)
             personaje.save()
             return redirect("potion_craft:inventario")
         else:

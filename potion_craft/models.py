@@ -5,6 +5,8 @@ from accounts.models import UserProfile
 class Personaje(models.Model):
     nombre = models.CharField(max_length = 25, unique=True)
     clase = models.CharField(max_length = 25, null=True, blank=True)
+    raza = models.CharField(max_length = 25, null=True, blank=True)
+    genero = models.CharField(max_length = 25, null=True, blank=True)
     portrait = models.CharField(max_length = 150, null=True, blank=True)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, 
                                      related_name='personajes', null=True, blank=True)

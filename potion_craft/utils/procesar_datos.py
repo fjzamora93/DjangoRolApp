@@ -149,3 +149,7 @@ def actualizar_bbdd(personaje_actual = Personaje, efecto = str, valor_esencias_g
     return pocion_añadida
     
     
+def generador_ruta_portrait(genero, raza, clase, portrait):
+    ruta = f'potion_craft/img/portraits/{raza}/{genero}-{raza}-{clase}-{portrait}.png'
+    print(ruta)
+    return ruta
