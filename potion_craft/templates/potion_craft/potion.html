@@ -2,45 +2,55 @@
 {% load static %}
 {% block body %}
 
-
+<script src="{% static 'potion_craft/js/potion.js' %}"></script>
 
 </form>
     
 
     <h3>Inventario disponible de {{ personaje.nombre }}</h3>
-    <img src="{% static personaje.portrait %}" width=100px>
+    <div>
+        <img src="{% static personaje.portrait %}" width=100px>
 
-    {% if form_potion.errors %}
-        <div class="alert alert-danger">
-            {% for field, error_list in form_potion.errors.items %}
-                <ul>
-                    {% for error in error_list %}
-                        <li class="form_error">{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
-        </div>
-    {% endif %}
+        {% if form_potion.errors %}
+            <div class="alert alert-danger"  class="horizontal">
+                {% for field, error_list in form_potion.errors.items %}
+                    <ul>
+                        {% for error in error_list %}
+                            <li class="form_error">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    <ul style=" list-style-type: none;">
-        {% for item in inventario.detalles_pociones %}
-            <li class="listado">
-                <b>Pociones :</b> {{ item.nombre }} {{ item.cantidad }}
-            </li>
-        {% empty %}
-        <li>No hay esencias en este momento</li>
-    {% endfor %}
-    </ul>
+        <ul style=" list-style-type: none;"  class="horizontal">
+            {% for item in inventario.detalles_pociones %}
+                <li class="listado">
+                    <b>Pociones :</b> {{ item.nombre }} {{ item.cantidad }}
+                </li>
+            {% empty %}
+            <li>No hay esencias en este momento</li>
+        {% endfor %}
+        </ul>
+    </div>
 
-
+    <div class="galeria">
+        <img src="" alt="" id="img-esencia-1" class="esencia">
+        <p> + </p>
+        <img src="" alt="" id="img-esencia-2" class="esencia">
+    </div>
 
 
     <h3> Potion Craft</h3>
 
     <form method="post">
         {% csrf_token %}
-        <label for="id_esencias">Elige tu esencia:</label>
-            <br>{{ form_potion.esencias }} <br>
+        <label for="id_esencias_1">Elige tu esencia:</label>
+            <br>{{ form_potion.esencia_1 }} <br>
+        
+        <label for="id_esencias_1">Elige una segunda esencia:</label>
+            <br>{{ form_potion.esencia_2 }} <br>
+
 
         <label for="id_base">Elige tu base:</label>
             <br>{{ form_potion.base }}<br>
@@ -63,4 +73,6 @@
 
     <li> <a href="{% url 'potion_craft:borrar' %}"> Borrar datos </a></li> 
 
+
+    
 {% endblock %}

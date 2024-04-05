@@ -1,5 +1,11 @@
 /*ESTILOS PARA EL TEXTO*/
 
+.alerta{
+    color:red;
+    font-size: 14px;
+    font-family:arial;
+}
+
 @font-face{
     font-family: "Antiqua";
     src: url('fonts/UncialAntiqua-Regular.ttf');
@@ -23,6 +29,10 @@ li, .listado {
     font-family: Papyrus, fantasy;
     font-size: 20px;
     list-style-type: none;
+}
+
+.horizontal, .horizontal>*{
+    display:inline-block;
 }
 
 .fuente-antigua{
@@ -53,17 +63,22 @@ body{
     text-align: center;
     justify-content: center;
     margin:20px;
-   
 }
 
 .galeria-side{
     width: 150px;
     height:auto;
     opacity:50%;
-    
 }
 
 
+.esencia{
+    width:100px;
+    height:100px;
+    border: 5px inset grey;
+    padding: 10px;
+    margin : 5px;
+}
 
 .grid-inventario{
     display: grid;

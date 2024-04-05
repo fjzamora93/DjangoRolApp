@@ -119,6 +119,7 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado=int, esenci
                     if alteracion == 2:
                         efecto = "Euforia"
     
+
     pocion_añadida = actualizar_bbdd(personaje_actual, efecto, esencias)
 
     return pocion_añadida
@@ -139,8 +140,10 @@ def actualizar_bbdd(personaje_actual = Personaje, efecto = str, valor_esencias_g
     
     for esencia in valor_esencias_gastadas:
         esencia = Esencia.objects.get(valor = esencia)
-
         personaje = PersonajeEsencias.objects.get(personaje = personaje_actual, esencia = esencia.valor)
+        if personaje.cantidad == 0 or None:
+            return None
+        
         print("COMPROBACION", personaje, esencia)
         personaje.cantidad -= 1
         personaje.save()

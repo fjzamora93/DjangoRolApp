@@ -53,12 +53,16 @@ def index(request):
 #AHORA MISMO FUNCIONA DE TAL FORMA QUE SOLAMENTE COGE UN PERSONAJE PARA CADA JUGADOR
 @login_required
 def inventario(request, personaje_id = 2):
+    if 'personaje' not in request.session or request.session['personaje'] == "":
+        alerta = "Selecciona un personaje"
+    else:
+        alerta =""
     personaje = Personaje.objects.get(id = personaje_id)
     user_profile = UserProfile.objects.get(user=request.user)
     if 'personaje' in request.session:
         personaje_seleccionado = request.session['personaje']
     else:
-        request.session['personaje'] = ''
+        request.session['personaje'] = None
       
     listado_personajes = Personaje.objects.filter(user_profile = user_profile) if request.user.is_authenticated else []
     return render(request, "potion_craft/inventario.html", {
@@ -66,6 +70,7 @@ def inventario(request, personaje_id = 2):
         "personaje" : personaje,
         "listado_personajes" : listado_personajes,
         "usuario" : user_profile,
+        "alerta" : alerta,
      })
 
 
@@ -135,6 +140,9 @@ def ingredient_craft(request):
 
 
 def potion_craft(request):
+    if 'personaje' not in request.session or request.session['personaje'] == "":
+        return HttpResponseRedirect(reverse("potion_craft:inventario"))
+
     personaje_actual = request.session['personaje']
     personaje_actual = Personaje.objects.get(id = personaje_actual)
     form_potion = PotionForm(initial={'dado': 11}, personaje= personaje_actual)
@@ -152,11 +160,15 @@ def potion_craft(request):
             alter = form_potion.cleaned_data['alter']
             conocimiento = form_potion.cleaned_data['conocimiento']
             util = form_potion.cleaned_data['util']
-            esencias = form_potion.cleaned_data['esencias']
+
+            esencia_1 = form_potion.cleaned_data['esencia_1']
+            esencia_2 = form_potion.cleaned_data['esencia_2']
+            esencias = [esencia_1, esencia_2]
 
             pocion_añadida = proc.procesar_datos_pocion(base, alter, conocimiento, 
                                                           util, dado, esencias, personaje_actual)
             
+            #TODO CREAR UN CASO PARA MANEJAR EL "NONE" (cuando las esencias eran 0 y cuando la poción falla)
             request.session["potion"] = pocion_añadida.potion.nombre if pocion_añadida != None else  None
            
             return redirect("potion_craft:inventario_detail", personaje_id=personaje_actual.id)
@@ -181,43 +193,3 @@ def borrar_datos_sesion(request):
 
 
 
-
-# def potion_craft(request):
-#     if "ingredientes" not in request.session:
-#         request.session["ingredientes"] = []
-#     if "potion" not in request.session:
-#         request.session["potion"] = []
-
-    
-#     if request.method == "POST":
-#         form_potion = PotionForm(request.POST)
-#         if form_potion.is_valid():
-#             print("FORMULARIO VÁLIDO")
-#             dado = form_potion.cleaned_data['dado']
-#             base = form_potion.cleaned_data['base']
-#             alter = form_potion.cleaned_data['alter']
-#             conocimiento = form_potion.cleaned_data['conocimiento']
-#             util = form_potion.cleaned_data['util']
-#             esencias = form_potion.cleaned_data['esencias']
-
-#             resultado_pocion = proc.procesar_datos_pocion(base, alter, conocimiento, util, dado, esencias)
-            
-#             request.session["potion"] += [resultado_pocion]
-#             print(resultado_pocion)
-#             return HttpResponseRedirect(reverse("potion_craft:index"))
-            
-#         else:
-#             print(form_potion.errors)
-            
-#             return render(request, "potion_craft/potion.html", {
-#                     "form_potion": PotionForm(request.POST),
-#                 })
-    
-#     else:
-#         form_potion = PotionForm(initial={'dado': 11})
-
-
-#     return render(request, "potion_craft/potion.html", {
-#         "ingredientes": request.session["ingredientes"],
-#         "form_potion": form_potion,
-#     })

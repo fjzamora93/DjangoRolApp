@@ -2,6 +2,7 @@
 {% load static %}
 {% block body %}
 
+<p class="alerta">{{ alerta }}</p>
 
 <h3>Inventario de Personajes de {{ usuario.nombre }}</h3>
 {% for personaje in listado_personajes %}

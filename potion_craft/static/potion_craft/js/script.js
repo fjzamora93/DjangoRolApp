@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function(){
     selectsCharCreator.forEach(select => {
         select.addEventListener('change', actualizarImagen);
 
-        
     });
 
     // Asignar event listeners a los botones

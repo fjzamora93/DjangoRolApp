@@ -54,7 +54,7 @@ class PersonajePotion(models.Model):
 class PersonajeEsencias(models.Model):
     personaje = models.ForeignKey(Personaje, on_delete=models.CASCADE)
     esencia = models.ForeignKey(Esencia, on_delete=models.CASCADE)
-    cantidad = models.IntegerField()
+    cantidad = models.IntegerField(default = 0)
     
     def __str__(self):
         return f"{self.personaje.nombre} tiene {self.cantidad} unidades de {self.esencia.nombre}"

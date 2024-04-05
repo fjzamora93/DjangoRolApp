@@ -49,8 +49,7 @@ class CharacterForm(forms.ModelForm):
         ('1', '1'),
         ('2', '2'),
         ('3', '3'),
-        ('4', '4'),
-        ('5', '5'),
+       
     ]
 
     nombre = forms.CharField(label='Nombre')
@@ -70,6 +69,14 @@ class CharacterForm(forms.ModelForm):
 
 
 class PotionForm(forms.Form):
+    ESENCIAS = [
+        ('0', 'Ninguna'),
+        ('1', 'Esencia Volátil'),
+        ('2', 'Esencia Acuosa'),
+        ('3', 'Esencia Terrosa'), 
+        ('4', 'Esencia Ígnea'),
+    ]
+    
     BASE = [
         ('0', 'Agua'),
         ('2', 'Agua destilada'),
@@ -106,6 +113,14 @@ class PotionForm(forms.Form):
         ('3', '3 esencias'), 
     ]
    
+    esencia_1 = forms.ChoiceField(choices=ESENCIAS, 
+                                 label="¿Qué esencia quieres usar?",
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
+    
+    esencia_2 = forms.ChoiceField(choices=ESENCIAS, 
+                                 label="¿Qué esencia quieres usar?",
+                                 widget=forms.Select(attrs={'class': 'form-control'}))
+
     base = forms.ChoiceField(choices=BASE, 
                                  label="¿Qué base líquida vas a usar para tu poción?",
                                  widget=forms.Select(attrs={'class': 'form-control'}))
@@ -127,39 +142,19 @@ class PotionForm(forms.Form):
 
     def __init__(self, *args, personaje=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['esencias'] = forms.MultipleChoiceField(
-            choices=self.get_esencias_choices(personaje),
-            label="Elige tu esencia",
-            widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'})
-        )
+        # self.fields['esencias'] = forms.MultipleChoiceField(
+        #     choices=self.get_esencias_choices(personaje),
+        #     label="Elige tu esencia",
+        #     widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'})
+        # )
       
         for field in self.fields.values():
             field.error_messages['required'] = 'Acuérdate de elegir!'
     
-    def get_esencias_choices(self, personaje):
-        
-        esencias_personaje = PersonajeEsencias.objects.filter(personaje=personaje)
-        esencias_choices = [(esencia.esencia.valor, esencia.esencia.nombre) for esencia in esencias_personaje]
-        
-     
-        return esencias_choices
-    
-    def clean(self):
-        cleaned_data = super().clean()
-
-        # Realiza tu validación personalizada aquí
-        esencias_value = cleaned_data.get('esencias')
-
-        # Verifica si el valor de las esencias está entre "1" y "4"
-        if esencias_value:
-            for esencia in esencias_value:
-                if not ('1' <= esencia <= '4'):
-                    self.add_error('esencias', 'El valor de las esencias debe estar entre "1" y "4".')
-
-        return cleaned_data
-
-    
-      
+    # def get_esencias_choices(self, personaje):
+    #     esencias_personaje = PersonajeEsencias.objects.filter(personaje=personaje)
+    #     esencias_choices = [(esencia.esencia.valor, esencia.esencia.nombre) for esencia in esencias_personaje]
+    #     return esencias_choices
 
 
 
