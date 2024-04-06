@@ -169,10 +169,10 @@ def potion_craft(request):
                                                           util, dado, esencias, personaje_actual)
             
             #TODO CREAR UN CASO PARA MANEJAR EL "NONE" (cuando las esencias eran 0 y cuando la poción falla)
-            request.session["potion"] = pocion_añadida.potion.nombre if pocion_añadida != None else  None
-           
-            return redirect("potion_craft:inventario_detail", personaje_id=personaje_actual.id)
-            
+            if pocion_añadida != None:
+                request.session["potion"] = pocion_añadida.potion.nombre
+                return redirect("potion_craft:inventario_detail", personaje_id=personaje_actual.id)
+              
         else:
             form_potion = PotionForm(initial={'dado': 11}, personaje=personaje_actual)
             

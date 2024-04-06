@@ -21,15 +21,16 @@ class Inventario():
                 'cantidad': cantidad}
             self.detalles_pociones.append(detalles_pocion)
 
-        # self.detalles_esencias = []
-        # for ingrediente in self.listado_ingredientes:
-        #     objeto_esencia = ingrediente.nombre
-        #     cantidad = ingrediente.cantidad
-        #     detalles_pocion = {
-        #         'nombre': objeto_esencia.nombre,
-        #         'descripcion': objeto_esencia.descripcion,
-        #         'cantidad': cantidad}
-        #     self.detalles_pociones.append(detalles_pocion)
+        self.detalles_esencias = []
+        for esencia in self.listado_esencias:
+            objeto_esencia = esencia.esencia
+            cantidad = esencia.cantidad
+            detalles_esencia = {
+                'nombre': objeto_esencia.nombre,
+                'tipo': objeto_esencia.tipo,
+                'valor' : objeto_esencia.valor,
+                'cantidad': cantidad}
+            self.detalles_esencias.append(detalles_esencia)
 
 
 

@@ -142,19 +142,11 @@ class PotionForm(forms.Form):
 
     def __init__(self, *args, personaje=None, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.fields['esencias'] = forms.MultipleChoiceField(
-        #     choices=self.get_esencias_choices(personaje),
-        #     label="Elige tu esencia",
-        #     widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'})
-        # )
       
         for field in self.fields.values():
             field.error_messages['required'] = 'Acuérdate de elegir!'
     
-    # def get_esencias_choices(self, personaje):
-    #     esencias_personaje = PersonajeEsencias.objects.filter(personaje=personaje)
-    #     esencias_choices = [(esencia.esencia.valor, esencia.esencia.nombre) for esencia in esencias_personaje]
-    #     return esencias_choices
+
 
 
 

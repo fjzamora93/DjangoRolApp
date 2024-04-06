@@ -55,7 +55,8 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado=int, esenci
     if sum <= 11:
         return None
     
-    efecto = 'Ingredientes no válidos!'
+    efecto = None
+
     if len(esencias) == 1:
         print("listado de 1 solo ingrediente", esencias, esencias[0])
         match esencias[0]:
@@ -119,7 +120,8 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado=int, esenci
                     if alteracion == 2:
                         efecto = "Euforia"
     
-
+    if efecto == None:
+        return None
     pocion_añadida = actualizar_bbdd(personaje_actual, efecto, esencias)
 
     return pocion_añadida
