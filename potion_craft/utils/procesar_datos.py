@@ -56,7 +56,7 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado=int, esenci
     if sum <= 11:
         return None
     
-    efecto = clasificar_esencias(esencias, alteracion)
+    efecto = clasificar_esencias(esencias, alteracion, personaje_actual)
     
 
     print("EL EFECTO ES EL SIGUIENTE: ", efecto)
@@ -83,8 +83,8 @@ def actualizar_bbdd(personaje_actual = Personaje, efecto = str, valor_esencias_g
     for esencia in valor_esencias_gastadas:
         if esencia != "0":
             esencia = Esencia.objects.get(valor = esencia)
-            personaje = PersonajeEsencias.objects.get(personaje = personaje_actual, esencia = esencia.valor)
-            if personaje.cantidad == 0 or None:
+            personaje = PersonajeEsencias.objects.get(personaje = personaje_actual, esencia = esencia)
+            if personaje.cantidad <= 0 or None:
                 return None
         
             print("COMPROBACION ANTES DE ACTUALIZACIÓN EN BBDD", personaje, esencia)

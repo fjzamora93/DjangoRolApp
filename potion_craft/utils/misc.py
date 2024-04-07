@@ -1,11 +1,12 @@
 
 import csv
+from ..models import *
 
 TABLA_EFECTOS = "potion_craft/utils/tabla_efectos.csv"
 
 
 
-def clasificar_esencias(esencias = list, alteracion = str) -> str:
+def clasificar_esencias(esencias = list, alteracion = str, personaje_actual = Personaje) -> str:
     if all(esen == "0" for esen in esencias):
         efecto = None
 
@@ -19,8 +20,14 @@ def clasificar_esencias(esencias = list, alteracion = str) -> str:
         elif alteracion == "2":
             efecto = matriz[int(esencias[0]) + 10] [int(esencias[1])+ 8]
         print("--------------------", efecto, int(esencias[0]), int(esencias[1]))
+    
+    # for esen in esencias:
+    #     if esen != "0":
+    #         esen = Esencia.objects.get(valor = esencias[0])
+    #         personaje_esencias = PersonajeEsencias.objects.get(personaje = personaje_actual, esencia = esen)
+    #         personaje_esencias.cantidad -= 1
 
-    return efecto if efecto != None or efecto != "None" else  None
+    return efecto.strip() if efecto != None or efecto != "None" else  None
   
 
 def leer_csv(nombre_archivo):
