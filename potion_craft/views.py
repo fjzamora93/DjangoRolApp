@@ -81,7 +81,7 @@ def inventario_detail(request, personaje_id):
     listado_esencias = PersonajeEsencias.objects.filter(personaje = personaje_id)
     listado_ingredientes = PersonajeIngredientes.objects.filter(personaje = personaje_id)
     listado_pociones = PersonajePotion.objects.filter(personaje = personaje_id)
-    print("PRINT INVENTARIO ", personaje.id, listado_pociones)
+   
 
     return render(request, "potion_craft/inventario_detail.html",{
         "personaje" : personaje,
@@ -146,15 +146,12 @@ def potion_craft(request):
     personaje_actual = request.session['personaje']
     personaje_actual = Personaje.objects.get(id = personaje_actual)
     form_potion = PotionForm(initial={'dado': 11}, personaje= personaje_actual)
-
     inventario = obt.Inventario(personaje_actual)
-    print("Personaje actual: ", inventario.listado_pociones)
 
     if request.method == "POST":
         form_potion = PotionForm(request.POST, personaje=personaje_actual)
 
         if form_potion.is_valid():
-            print("FORMULARIO VÁLIDO")
             dado = form_potion.cleaned_data['dado']
             base = form_potion.cleaned_data['base']
             alter = form_potion.cleaned_data['alter']

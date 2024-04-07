@@ -1,5 +1,6 @@
 import random
 from ..models import *
+from .misc import *
 
 """
 Esta función puede devolver dos cosas:
@@ -55,71 +56,10 @@ def procesar_datos_pocion(base, alteracion, conocimiento, util, dado=int, esenci
     if sum <= 11:
         return None
     
-    efecto = None
-
-    if len(esencias) == 1:
-        print("listado de 1 solo ingrediente", esencias, esencias[0])
-        match esencias[0]:
-            case "1":
-                efecto = "Maná"
-                if alteracion == 1:
-                    efecto = "Eléctrica"
-                if alteracion == 2:
-                    efecto = "Inspiración"
-
-            case "2":
-                efecto = "Curativa"
-                if alteracion == 1:
-                    efecto = "Veneno"
-                if alteracion == 2:
-                    efecto = "Calma"
-            case "3":
-                efecto = "Piel de Piedra"
-                if alteracion == 1:
-                    efecto = "Petrificación"
-                if alteracion == 2:
-                    efecto = "Concentración"
-            case "4":
-                efecto = "Fuerza"
-                if alteracion == 1:
-                    efecto = "Explosiva"
-                if alteracion == 2:
-                    efecto = "Furia"
+    efecto = clasificar_esencias(esencias, alteracion)
     
-    if len(esencias) == 2:
-        print("listado de 2 ingredientes", esencias, esencias[1])
-        match esencias[1]:
-            case "2":
-                if esencias[0] == 1:
-                    efecto = "Suerte Líquida"
-                    if alteracion == 1:
-                        efecto = "Aturdimiento"
-                    if alteracion == 2:
-                        efecto = "Locura"
 
-            case "3":
-                if esencias[0] == 2:
-                    efecto = "Falsa Vida"
-                    if alteracion == 1:
-                        efecto = "Congelación"
-                    if alteracion == 2:
-                        efecto = "Depresión"
-
-            case "4":
-                if esencias[0] == 1:
-                    efecto = "Antídoto"
-                    if alteracion == 1:
-                        efecto = "Corrosiva"
-                    if alteracion == 2:
-                        efecto = "Alcohol"
-
-                if esencias[0] == 3:
-                    efecto = "Agilidad"
-                    if alteracion == 1:
-                        efecto = "Ceguera"
-                    if alteracion == 2:
-                        efecto = "Euforia"
-    
+    print("EL EFECTO ES EL SIGUIENTE: ", efecto)
     if efecto == None:
         return None
     pocion_añadida = actualizar_bbdd(personaje_actual, efecto, esencias)
@@ -141,14 +81,16 @@ def actualizar_bbdd(personaje_actual = Personaje, efecto = str, valor_esencias_g
         pocion_añadida.save()
     
     for esencia in valor_esencias_gastadas:
-        esencia = Esencia.objects.get(valor = esencia)
-        personaje = PersonajeEsencias.objects.get(personaje = personaje_actual, esencia = esencia.valor)
-        if personaje.cantidad == 0 or None:
-            return None
+        if esencia != "0":
+            esencia = Esencia.objects.get(valor = esencia)
+            personaje = PersonajeEsencias.objects.get(personaje = personaje_actual, esencia = esencia.valor)
+            if personaje.cantidad == 0 or None:
+                return None
         
-        print("COMPROBACION", personaje, esencia)
-        personaje.cantidad -= 1
-        personaje.save()
+            print("COMPROBACION ANTES DE ACTUALIZACIÓN EN BBDD", personaje, esencia)
+            personaje.cantidad -= 1
+            print("COMPROBACION DESPUÉS ACT BBDD", personaje, esencia, "POCIÓN AÑADIDA: ", pocion_añadida)
+            personaje.save()
 
 
     return pocion_añadida
