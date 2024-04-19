@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
      'web-production-82c5.up.railway.app',
+     '127.0.0.1' ,
 ]
 
 
@@ -150,3 +151,16 @@ LOGOUT_REDIRECT_URL = "/"
 
 #This step will tell the django to serve the staticfiles in the production. Add the following code to the settings.py file.
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage' 
+
+# settings.py
+
+
+#DESACTIVAR EN LOCAL
+# Habilita la redirección SSL para todas las solicitudes HTTP a HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Asegura que las cookies de sesión solo se envíen a través de conexiones HTTPS
+SESSION_COOKIE_SECURE = True
+
+# Asegura que las cookies CSRF solo se envíen a través de conexiones HTTPS
+CSRF_COOKIE_SECURE = True
