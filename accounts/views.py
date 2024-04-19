@@ -7,7 +7,7 @@ from django.contrib.auth import login
 #En esta función vamos a ver cómo insertar y crear varibles en HTML desde Python. 
 
 from .forms import SignupForm, SignupFormPersonalizado
-
+from django.views.decorators.csrf import csrf_protect
 
 
 class SignUpView(CreateView):
@@ -15,7 +15,7 @@ class SignUpView(CreateView):
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
-
+@csrf_protect
 def signup(request):
     print("SE HA HECHO POR AQUÍ")
     if request.method == 'POST':

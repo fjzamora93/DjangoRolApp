@@ -27,19 +27,18 @@ SECRET_KEY = 'django-insecure-&@b2kenj(7pyc2mhduh7-^sm8^jcz)qz94sv%zs#-&a7urno=a
 DEBUG = True
 
 ALLOWED_HOSTS = [
-     'web-production-82c5.up.railway.app',
-      'https://web-production-82c5.up.railway.app/',
-    'http://web-production-82c5.up.railway.app/',
-     'localhost',
-     '127.0.0.1' ,
+    'web-production-82c5.up.railway.app',
+    'localhost',
+    '127.0.0.1',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'web-production-82c5.up.railway.app',
-    'https://web-production-82c5.up.railway.app/',
-    'http://web-production-82c5.up.railway.app/',
-    '127.0.0.1' ,
-                        ]
+    'http://web-production-82c5.up.railway.app',
+    'https://web-production-82c5.up.railway.app',
+    '127.0.0.1',
+]
+
 
 
 # Application definition
