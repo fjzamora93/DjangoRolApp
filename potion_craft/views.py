@@ -13,6 +13,7 @@ from django.views.generic import CreateView
 from django.views.generic.detail import DetailView
 from accounts.models import UserProfile
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 
 # class UserProfileDetailView(DetailView):
 #     model = UserProfile
@@ -30,7 +31,7 @@ class SignUpView(CreateView):
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
-
+@csrf_protect
 def index(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -52,6 +53,7 @@ def index(request):
 
 #AHORA MISMO FUNCIONA DE TAL FORMA QUE SOLAMENTE COGE UN PERSONAJE PARA CADA JUGADOR
 @login_required
+@csrf_protect
 def inventario(request, personaje_id = 2):
     if 'personaje' not in request.session or request.session['personaje'] == "":
         alerta = "Selecciona un personaje"
@@ -73,7 +75,7 @@ def inventario(request, personaje_id = 2):
         "alerta" : alerta,
      })
 
-
+@csrf_protect
 def inventario_detail(request, personaje_id):
     personaje = Personaje.objects.get(id = personaje_id)
     request.session['personaje'] = personaje.id
@@ -90,7 +92,7 @@ def inventario_detail(request, personaje_id):
         "listado_pociones" : listado_pociones,
     })
 
-
+@csrf_protect
 def character_creator(request):
     form = CharacterForm()
     if request.method == "POST":
@@ -111,7 +113,7 @@ def character_creator(request):
         "form": form
     })
 
-
+@csrf_protect
 def ingredient_craft(request):
     esencias = []
     if request.method == "POST":
@@ -138,7 +140,7 @@ def ingredient_craft(request):
     
 })
 
-
+@csrf_protect
 def potion_craft(request):
     if 'personaje' not in request.session or request.session['personaje'] == "":
         return HttpResponseRedirect(reverse("potion_craft:inventario"))
@@ -181,7 +183,7 @@ def potion_craft(request):
     })
 
 
-
+@csrf_protect
 def borrar_datos_sesion(request):
     if 'ingredientes' in request.session:
         del request.session['ingredientes']

@@ -155,12 +155,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 # settings.py
 
 
-#DESACTIVAR EN LOCAL
-# Habilita la redirección SSL para todas las solicitudes HTTP a HTTPS
-SECURE_SSL_REDIRECT = True
-
-# Asegura que las cookies de sesión solo se envíen a través de conexiones HTTPS
-SESSION_COOKIE_SECURE = True
-
-# Asegura que las cookies CSRF solo se envíen a través de conexiones HTTPS
-CSRF_COOKIE_SECURE = True
+# DESACTIVAR EN LOCAL
+# Si estamos en un entorno local, establece estas opciones como False, de lo contrario, establece como True
+if DEBUG:
+    # En entorno local, desactiva la redirección SSL y la seguridad de las cookies
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+else:
+    # En otros entornos, activa la redirección SSL y la seguridad de las cookies
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
