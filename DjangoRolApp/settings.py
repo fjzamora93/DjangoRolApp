@@ -155,6 +155,15 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 # settings.py
 
 
+
+CSRF_TRUSTED_ORIGINS = [
+    'web-production-82c5.up.railway.app',
+    'https://web-production-82c5.up.railway.app/',
+    'http://web-production-82c5.up.railway.app/',
+    '127.0.0.1' ,
+                        ]
+
+
 #DESACTIVAR EN LOCAL
 # Habilita la redirección SSL para todas las solicitudes HTTP a HTTPS
 SECURE_SSL_REDIRECT = False
