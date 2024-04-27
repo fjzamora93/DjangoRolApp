@@ -33,6 +33,7 @@ class SignUpView(CreateView):
 
 @csrf_protect
 def index(request):
+    form = CharacterForm()
     try:
         user_profile = UserProfile.objects.get(user=request.user)
         listado_personajes = Personaje.objects.filter(user_profile = user_profile)
@@ -47,8 +48,8 @@ def index(request):
     return render(request, "potion_craft/index.html", {
         "user_profile": user_profile,
         "listado_personajes" : listado_personajes,
-        "personaje_seleccionado" : personaje_seleccionado
-       
+        "personaje_seleccionado" : personaje_seleccionado,
+        "form": form
         })
 
 #AHORA MISMO FUNCIONA DE TAL FORMA QUE SOLAMENTE COGE UN PERSONAJE PARA CADA JUGADOR

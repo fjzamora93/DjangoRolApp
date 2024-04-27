@@ -25,7 +25,54 @@
         <p>Nada</p>
     {% endfor %}
 
+    <h2>Crea tu personaje </h2>
+<form method="post">
+    {% csrf_token %}
+    
+    <label for="{{ id_nombre }}">Nombre: </label>
+        <br>{{ form.nombre }} <br>
 
+    <label for="id_clase">Clase:</label><br>
+        {{ form.clase }}<br>
+
+    <label for="id_raza">Raza:</label><br>
+        {{ form.raza }}<br>
+
+    <label for="id_genero">Género:</label>
+        <br>{{ form.genero }}<br>
+
+    <label for="id_portrait">Selecciona tu Avatar:</label>
+        <br><div style="display: none;">{{ form.portrait }}</div><br>
+
+
+
+
+    <div class="galeria">
+        <button type="button" onclick="actualizarImagen()" value="-" class="button-74"> << </button>
+        <div>
+            <img src="{% static 'potion_craft/img/portraits/humano/masc-humano-guerrero-1.png' %}" alt="" class="galeria-side" id ="retrato-izquierda">
+            <img src="{% static 'potion_craft/img/portraits/humano/masc-humano-guerrero-1.png' %}"  width="200px" id="retrato">
+            <img src="{% static 'potion_craft/img/portraits/humano/masc-humano-guerrero-1.png' %}" alt="" class="galeria-side" id="retrato-derecha">
+        </div>
+        <button type="button" onclick="actualizarImagen()" value="+" class="button-74"> >> </button>
+    </div>
+
+    <br><br><button type="submit" class="button-74">Guardar</button>
+
+    {% if form.errors %}
+        <div class="errors">
+            <ul>
+                {% for field_errors in form.errors.values %}
+                    {% for error in field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul> 
+        </div>
+    {% endif %}
+
+</form>
+</div>
 
   
  
